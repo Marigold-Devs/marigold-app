@@ -1,0 +1,17 @@
+@import '../../assets/styles/main';
+
+.Login {
+  height: 100vh;
+  @include flex(center, center);
+
+  &_container {
+    width: 400px;
+    padding: 50px 40px !important;
+    @include flex(center, center, column);
+  }
+
+  &_logo {
+    width: 200px;
+    margin-bottom: 40px;
+  }
+}

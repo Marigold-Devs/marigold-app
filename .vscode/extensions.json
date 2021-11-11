@@ -1,0 +1,15 @@
+{
+	"recommendations": [
+		"steoates.autoimport",
+		"nucllear.vscode-extension-auto-import",
+		"aaron-bond.better-comments",
+		"coenraads.bracket-pair-colorizer-2",
+		"wmaurer.change-case",
+		"dsznajder.es7-react-js-snippets",
+		"dbaeumer.vscode-eslint",
+		"visualstudioexptteam.vscodeintellicode",
+		"esbenp.prettier-vscode",
+		"pkief.material-icon-theme",
+		"xabikos.javascriptsnippets"
+	]
+}

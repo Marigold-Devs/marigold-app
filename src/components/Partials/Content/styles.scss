@@ -1,0 +1,33 @@
+@import '../../../assets/styles/main';
+
+.ContentLayout {
+  min-height: 100vh !important;
+  margin-left: 280px;
+  width: calc(100% - 281px);
+  overflow-x: hidden;
+
+  @include breakpoint-down(768px) {
+    width: calc(100%) !important;
+  }
+
+  &__sidebarCollapsed {
+    margin-left: 0 !important;
+  }
+
+  &_header {
+    height: auto !important;
+    width: 100%;
+    padding: 35px 30px 30px 30px !important;
+    background: transparent !important;
+
+    &_title {
+      @include flex(flex-start, center);
+      @include font(1.875rem, 800);
+      margin: 0;
+    }
+  }
+
+  &_mainContent {
+    padding: 0 30px;
+  }
+}

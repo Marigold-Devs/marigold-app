@@ -41,7 +41,7 @@ const Login = () => {
         <Formik
           initialValues={formDetails.defaultValues}
           validationSchema={formDetails.schema}
-          onSubmit={async (values, { setFieldError }) => {
+          onSubmit={(values, { setFieldError }) => {
             setLoading(true);
 
             AuthService.login({ body: values })

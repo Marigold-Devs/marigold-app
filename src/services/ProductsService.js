@@ -5,9 +5,11 @@ export const BASE_URL = '/products/';
 const ProductsService = {
   list: ({ params }) => axios.get(`${BASE_URL}`, { params }),
 
-  create: (body) => axios.post(`${BASE_URL}`, body),
+  retrieve: (id) => axios.get(`${BASE_URL}${id}/`),
 
-  edit: (id, body) => axios.patch(`${BASE_URL}${id}/`, body),
+  create: ({ body }) => axios.post(`${BASE_URL}`, body),
+
+  edit: ({ id, body }) => axios.patch(`${BASE_URL}${id}/`, body),
 
   delete: (id) => axios.delete(`${BASE_URL}${id}/`),
 };

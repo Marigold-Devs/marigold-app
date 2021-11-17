@@ -118,7 +118,7 @@
         "callbacksLast": true,
         "ignoreCase": true,
         "reservedFirst": true,
-        "shorthandFirst": true
+        "shorthandLast": true
       }
     ],
     "space-before-function-paren": 0,

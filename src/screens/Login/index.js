@@ -116,11 +116,11 @@ const Login = () => {
                 </div>
 
                 <Button
-                  block
                   htmlType="submit"
                   loading={isLoading}
                   size="large"
                   type="primary"
+                  block
                 >
                   Login
                 </Button>

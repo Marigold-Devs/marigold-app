@@ -1,11 +1,12 @@
 import { Button, Input, Modal, Typography } from 'antd';
 import { ErrorMessage, Form, Formik } from 'formik';
+import { GENERIC_ERROR_MESSAGE } from 'globals/variables';
 import PropTypes from 'prop-types';
 import React, { useCallback, useRef, useState } from 'react';
 import { BranchesService } from 'services';
 import * as Yup from 'yup';
 
-export const CreateEditBranchModal = ({ branch, onSuccess, onClose }) => {
+export const ModifyBranchModal = ({ branch, onSuccess, onClose }) => {
   const [isLoading, setLoading] = useState(false);
 
   const refFormik = useRef();
@@ -25,9 +26,6 @@ export const CreateEditBranchModal = ({ branch, onSuccess, onClose }) => {
 
   return (
     <Modal
-      centered
-      closable
-      visible
       footer={[
         <Button disabled={isLoading} size="large" onClick={onClose}>
           Cancel
@@ -44,13 +42,16 @@ export const CreateEditBranchModal = ({ branch, onSuccess, onClose }) => {
         </Button>,
       ]}
       title={branch ? '[Edit] Branch' : '[Create] Branch'}
+      centered
+      closable
+      visible
       onCancel={onClose}
     >
       <Formik
-        enableReinitialize
         initialValues={getFormDetails().defaultValues}
         innerRef={refFormik}
         validationSchema={getFormDetails().schema}
+        enableReinitialize
         onSubmit={async (values, { setFieldError }) => {
           setLoading(true);
 
@@ -63,10 +64,7 @@ export const CreateEditBranchModal = ({ branch, onSuccess, onClose }) => {
             onSuccess();
             onClose();
           } catch (e) {
-            setFieldError(
-              'name',
-              'An error occurred while processing your data.'
-            );
+            setFieldError('name', GENERIC_ERROR_MESSAGE);
           } finally {
             setLoading(false);
           }
@@ -74,8 +72,8 @@ export const CreateEditBranchModal = ({ branch, onSuccess, onClose }) => {
       >
         {({ values, setFieldValue }) => (
           <Form>
+            <Typography.Text strong>Name</Typography.Text>
             <Input
-              placeholder="Name"
               value={values.name}
               onChange={(e) => {
                 setFieldValue('name', e.target.value);
@@ -94,7 +92,7 @@ export const CreateEditBranchModal = ({ branch, onSuccess, onClose }) => {
   );
 };
 
-CreateEditBranchModal.propTypes = {
+ModifyBranchModal.propTypes = {
   branch: PropTypes.object,
   onClose: PropTypes.func.isRequired,
   onSuccess: PropTypes.func.isRequired,

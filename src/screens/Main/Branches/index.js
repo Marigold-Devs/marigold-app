@@ -5,7 +5,7 @@ import { Box } from 'components/elements';
 import { useBranches } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { BranchesService } from 'services';
-import { CreateEditBranchModal } from './components/CreateEditBranchModal';
+import { ModifyBranchModal } from './components/ModifyBranchModal';
 import './styles.scss';
 
 const columns = [
@@ -16,7 +16,7 @@ const columns = [
 const Branches = () => {
   // STATES
   const [dataSource, setDataSource] = useState([]);
-  const [createEditBranchModalVisible, setCreateEditBranchModalVisible] =
+  const [modifyBranchModalVisible, setModifyBranchModalVisible] =
     useState(false);
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [deleteConfirmLoading, setDeleteConfirmLoading] = useState(false);
@@ -27,12 +27,12 @@ const Branches = () => {
   // EFFECTS
   const onCreate = () => {
     setSelectedBranch(null);
-    setCreateEditBranchModalVisible(true);
+    setModifyBranchModalVisible(true);
   };
 
   const onEdit = (branch) => {
     setSelectedBranch(branch);
-    setCreateEditBranchModalVisible(true);
+    setModifyBranchModalVisible(true);
   };
 
   const onDelete = (id) => {
@@ -47,7 +47,7 @@ const Branches = () => {
   };
 
   useEffect(() => {
-    const formattedBranches = branches.map((branch) => ({
+    const data = branches.map((branch) => ({
       key: branch.id,
       name: branch.name,
       actions: (
@@ -70,7 +70,7 @@ const Branches = () => {
               onDelete(branch.id);
             }}
           >
-            <Button danger type="link">
+            <Button type="link" danger>
               Delete
             </Button>
           </Popconfirm>
@@ -78,7 +78,7 @@ const Branches = () => {
       ),
     }));
 
-    setDataSource(formattedBranches);
+    setDataSource(data);
   }, [branches]);
 
   return (
@@ -100,12 +100,12 @@ const Branches = () => {
           rowKey="key"
         />
 
-        {createEditBranchModalVisible && (
-          <CreateEditBranchModal
+        {modifyBranchModalVisible && (
+          <ModifyBranchModal
             branch={selectedBranch}
             onClose={() => {
               setSelectedBranch(null);
-              setCreateEditBranchModalVisible(false);
+              setModifyBranchModalVisible(false);
             }}
             onSuccess={refetch}
           />

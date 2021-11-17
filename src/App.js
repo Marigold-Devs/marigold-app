@@ -1,14 +1,25 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Login, Main, Branches, Dashboard, Products } from 'screens';
+import {
+  Branches,
+  Dashboard,
+  Login,
+  Main,
+  ModifyProduct,
+  Products,
+} from 'screens';
 
 const App = () => (
   <BrowserRouter>
     <Routes>
       <Route element={<Main />} path="/">
-        <Route index element={<Dashboard />} path="/dashboard" />
-        <Route element={<Products />} path="products" />
+        <Route element={<Dashboard />} path="dashboard" />
+
         <Route element={<Branches />} path="branches" />
+
+        <Route element={<Products />} path="products" />
+        <Route element={<ModifyProduct />} path="products/create" />
+        <Route element={<ModifyProduct />} path="products/:productId" />
       </Route>
       <Route element={<Login />} path="login" />
     </Routes>

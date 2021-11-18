@@ -1,15 +1,24 @@
 import { useQuery } from 'react-query';
-import { ProductsService } from 'services';
+import { BranchProductsService } from 'services';
 
-const useProducts = ({ params }) =>
+const useBranchProducts = ({ params }) =>
   useQuery(
-    ['useProducts', params.page, params.pageSize, params.search],
+    [
+      'useBranchProducts',
+      params.page,
+      params.pageSize,
+      params.search,
+      params.branchId,
+      params.status,
+    ],
     () =>
-      ProductsService.list({
+      BranchProductsService.list({
         params: {
           page: params.page,
           page_size: params.pageSize,
+          branch_id: params.branchId,
           search: params.search,
+          status: params.status,
         },
       }),
     {
@@ -22,4 +31,4 @@ const useProducts = ({ params }) =>
     }
   );
 
-export default useProducts;
+export default useBranchProducts;

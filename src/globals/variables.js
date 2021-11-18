@@ -20,3 +20,9 @@ export const priceTypes = {
   PICKUP: 'pickup',
   SPECIAL: 'special',
 };
+
+export const productStatuses = {
+  AVAILABLE: 'available',
+  REORDER: 'reorder',
+  OUT_OF_STOCK: 'out_of_stock',
+};

@@ -3,7 +3,7 @@ import { UnitTypesService } from 'services';
 
 const useUnitTypes = () =>
   useQuery(
-    'unitTypes',
+    'useUnitTypes',
     () =>
       UnitTypesService.list({
         params: {

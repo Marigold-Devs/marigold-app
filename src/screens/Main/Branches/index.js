@@ -22,7 +22,7 @@ const Branches = () => {
   const [deleteConfirmLoading, setDeleteConfirmLoading] = useState(false);
 
   // CUSTOM HOOKS
-  const { isFetching, data: branches, refetch } = useBranches({});
+  const { isFetching, data: branches, refetch } = useBranches();
 
   // EFFECTS
   const onCreate = () => {

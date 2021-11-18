@@ -40,9 +40,10 @@ const Products = () => {
   const navigate = useNavigate();
   const { setSearchParams } = useCustomParams();
 
+  const { isFetching: isUnitTypesFetching, data: unitTypes } = useUnitTypes();
   const {
     isFetching: isProductsFetching,
-    data: { count, products },
+    data: { total, products },
     refetch: refetchProducts,
   } = useProducts({
     params: {
@@ -51,7 +52,6 @@ const Products = () => {
       search: searchParams.get('search'),
     },
   });
-  const { isFetching: isUnitTypesFetching, data: unitTypes } = useUnitTypes();
 
   // METHODS
   const deleteProduct = (productId) => {
@@ -74,6 +74,7 @@ const Products = () => {
         key: product.id,
         name: (
           <Button
+            className="Products_productName"
             type="link"
             onClick={() => {
               setSelectedProduct(product);
@@ -169,7 +170,7 @@ const Products = () => {
           loading={isProductsFetching || isUnitTypesFetching || isDeleting}
           pagination={{
             current: searchParams.get('page') || 1,
-            total: count,
+            total,
             pageSize: searchParams.get('pageSize') || 10,
             onChange: (page, newPageSize) => {
               setSearchParams({

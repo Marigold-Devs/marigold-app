@@ -448,7 +448,12 @@ const ProductPrice = ({
 ProductPrice.propTypes = {
   index: PropTypes.number.isRequired,
   isCreate: PropTypes.bool.isRequired,
-  unitTypes: PropTypes.array.isRequired,
+  unitTypes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    })
+  ).isRequired,
   values: PropTypes.shape({
     priceMarket: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     priceDelivery: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

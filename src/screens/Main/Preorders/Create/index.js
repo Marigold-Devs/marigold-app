@@ -525,16 +525,21 @@ const ProductsSelected = ({ values, onSetFieldValue }) => {
         preorderProduct.productPrices.forEach(
           (productPrice, productPriceIndex) => {
             data[String(productPrice.unitTypeId)] = (
-              <Input
-                style={{ textAlign: 'center' }}
-                type="number"
-                onChange={(e) => {
-                  onSetFieldValue(
-                    `preorderProducts.${index}.productPrices.${productPriceIndex}.quantity`,
-                    Number(e.target.value)
-                  );
-                }}
-              />
+              <>
+                <Input
+                  style={{ textAlign: 'center' }}
+                  type="number"
+                  onChange={(e) => {
+                    onSetFieldValue(
+                      `preorderProducts.${index}.productPrices.${productPriceIndex}.quantity`,
+                      Number(e.target.value)
+                    );
+                  }}
+                />
+                <FormError
+                  name={`preorderProducts.${index}.productPrices.${productPriceIndex}.quantity`}
+                />
+              </>
             );
           }
         );

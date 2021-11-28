@@ -23,12 +23,39 @@ import { upperFirst } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { PreordersService } from 'services';
+import '../styles.scss';
+import { CreateTransactionModal } from './CreateTransactionModal/index';
+import { ViewTransactionModal } from './ViewTransactionModal';
+
+const transactionColumns = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+  },
+  {
+    title: 'Date Created',
+    dataIndex: 'datetime_created',
+  },
+  {
+    title: 'Received By',
+    dataIndex: 'received_by',
+  },
+  {
+    title: 'Action',
+    dataIndex: 'actions',
+  },
+];
 
 const Preorders = () => {
   // STATES
   const [isLoading, setIsLoading] = useState(false);
   const [preorderProducts, setPreorderProducts] = useState([]);
+  const [preorderProductsObject, setPreorderProductsObject] = useState({});
   const [unitTypesId, setUnitTypesId] = useState([]);
+  const [createTransactionModalVisible, setCreateTransactionModalVisible] =
+    useState(false);
+  const [transactionsDataSource, setTransactionsDataSource] = useState([]);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   // CUSTOM HOOKS
   const params = useParams();
@@ -59,6 +86,8 @@ const Preorders = () => {
       data[productName].push(preorderProduct);
     });
 
+    setPreorderProductsObject(data);
+
     // Note: Convert the object into array
     const newUnitTypeIds = [];
     setPreorderProducts(
@@ -86,7 +115,30 @@ const Preorders = () => {
     setUnitTypesId(newUnitTypeIds);
   }, [preorder]);
 
-  const getColumns = useCallback(() => {
+  useEffect(() => {
+    if (preorder?.preorder_transactions) {
+      setTransactionsDataSource(
+        preorder.preorder_transactions.map((transaction) => ({
+          row: transaction.id,
+          id: transaction.id,
+          datetime_created: formatDateTime(transaction.datetime_created),
+          received_by: `${transaction.user.first_name} ${transaction.user.last_name}`,
+          actions: (
+            <Button
+              type="link"
+              onClick={() => {
+                setSelectedTransaction(transaction);
+              }}
+            >
+              View
+            </Button>
+          ),
+        }))
+      );
+    }
+  }, [preorder]);
+
+  const getPreorderProductColumns = useCallback(() => {
     const filteredUnitTypes = unitTypes.filter((unitType) =>
       unitTypesId.includes(unitType.id)
     );
@@ -176,7 +228,7 @@ const Preorders = () => {
           <Divider />
 
           <Table
-            columns={getColumns()}
+            columns={getPreorderProductColumns()}
             dataSource={preorderProducts}
             pagination={false}
             rowKey="key"
@@ -225,12 +277,51 @@ const Preorders = () => {
               <Typography.Title level={4}>Transactions</Typography.Title>
             </Col>
             <Col>
-              <Button size="large" type="primary" onClick={() => {}}>
+              <Button
+                size="large"
+                type="primary"
+                onClick={() => {
+                  setCreateTransactionModalVisible(true);
+                }}
+              >
                 <PlusOutlined /> Create Transaction
               </Button>
             </Col>
           </Row>
+
+          <Table
+            columns={transactionColumns}
+            dataSource={transactionsDataSource}
+            pagination={false}
+            rowKey="key"
+            scroll={{ x: 800 }}
+          />
         </Box>
+
+        {createTransactionModalVisible && (
+          <CreateTransactionModal
+            columns={getPreorderProductColumns()}
+            preorder={preorder}
+            preorderProducts={preorderProductsObject}
+            onClose={() => {
+              setCreateTransactionModalVisible(false);
+            }}
+            onSuccess={() => {
+              refetchPreorder();
+              setCreateTransactionModalVisible(false);
+            }}
+          />
+        )}
+
+        {selectedTransaction && (
+          <ViewTransactionModal
+            preorderTransaction={selectedTransaction}
+            unitTypes={unitTypes}
+            onClose={() => {
+              setSelectedTransaction(null);
+            }}
+          />
+        )}
       </Spin>
     </Content>
   );

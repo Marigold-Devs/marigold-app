@@ -2,5 +2,8 @@ export { default as Login } from './Login';
 export { default as Main } from './Main';
 export { default as Branches } from './Main/Branches';
 export { default as Dashboard } from './Main/Dashboard';
+export { default as Preorders } from './Main/Preorders';
+export { default as CreatePreorder } from './Main/Preorders/Create';
+export { default as ViewPreorder } from './Main/Preorders/View';
 export { default as Products } from './Main/Products';
 export { default as ModifyProduct } from './Main/Products/Modify';

@@ -19,11 +19,11 @@ const sidebarItems = [
     icon: 'shop',
     link: '/branches',
   },
-  // {
-  //   name: 'Pre-orders',
-  //   icon: 'profile',
-  //   link: '/pre-orders',
-  // },
+  {
+    name: 'Preorders',
+    icon: 'profile',
+    link: '/preorders',
+  },
   // {
   //   name: 'deliveries',
   //   icon: 'contacts',

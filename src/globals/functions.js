@@ -1,4 +1,5 @@
 import { isNaN, round } from 'lodash';
+import moment from 'moment';
 import { userTypes } from './variables';
 
 export const getUserTypeName = (type) => {
@@ -24,3 +25,6 @@ export const formatInPeso = (value, pesoSign = '₱') => {
     ? ''
     : `${pesoSign}${numberWithCommas(round(x, 2).toFixed(2))}`;
 };
+
+export const formatDateTime = (datetime) =>
+  datetime ? moment(datetime).format('MM/DD/YYYY h:mma') : '';

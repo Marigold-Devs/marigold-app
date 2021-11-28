@@ -1,4 +1,5 @@
-import { Button, Col, Input, Row, Select, Table, Typography, Tag } from 'antd';
+import { Button, Col, Input, Row, Select, Table, Typography } from 'antd';
+import { BranchProductStatus } from 'components';
 import { productStatuses } from 'globals/variables';
 import { useBranchProducts, useCustomParams } from 'hooks';
 import { flatten } from 'lodash';
@@ -47,8 +48,7 @@ const BranchProducts = ({ unitTypes }) => {
             {product.name}
           </Button>
         ),
-        // eslint-disable-next-line no-use-before-define
-        status: renderProductStatus(product.status),
+        status: <BranchProductStatus status={product.status} />,
       };
 
       product.product_prices.forEach((productPrice) => {
@@ -80,26 +80,6 @@ const BranchProducts = ({ unitTypes }) => {
       { title: 'Status', dataIndex: 'status', width: 150, fixed: 'right' },
     ];
   }, [products, unitTypes]);
-
-  const renderProductStatus = (status) => {
-    let component = null;
-
-    switch (status) {
-      case productStatuses.AVAILABLE:
-        component = <Tag color="green">Available</Tag>;
-        break;
-      case productStatuses.REORDER:
-        component = <Tag color="orange">Reorder</Tag>;
-        break;
-      case productStatuses.OUT_OF_STOCK:
-        component = <Tag color="red">Out of Stock</Tag>;
-        break;
-      default:
-        break;
-    }
-
-    return component;
-  };
 
   return (
     <>

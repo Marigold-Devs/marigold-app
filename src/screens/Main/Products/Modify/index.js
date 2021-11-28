@@ -76,9 +76,7 @@ const ModifyProduct = () => {
             priceSpecial: Yup.number()
               .positive('Must be greater than zero')
               .required('Required'),
-            reorderPoint: Yup.number()
-              .positive('Must be greater than zero')
-              .required('Required'),
+            reorderPoint: Yup.number(),
             unitType: Yup.string().required('Required'),
           })
         ),

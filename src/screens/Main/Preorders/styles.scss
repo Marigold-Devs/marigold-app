@@ -1,0 +1,13 @@
+@import '../../../assets/styles/main';
+
+.Preorders {
+  &_createRow {
+    margin-bottom: 20px;
+  }
+
+  &_transaction {
+    &__createRow {
+      margin-bottom: 20px;
+    }
+  }
+}

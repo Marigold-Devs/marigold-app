@@ -9,7 +9,8 @@
     "eject": "react-scripts eject",
     "lint": "cd src && eslint . --ext .tsx --ext .ts",
     "lint:fix": "cd src && eslint . --ext .jsx --ext .js --fix",
-    "prettify": "prettier --write ./src"
+    "prettify": "prettier --write ./src",
+    "server": "cd ../marigold-api && poetry run python3 manage.py runserver"
   },
   "dependencies": {
     "@ant-design/compatible": "^1.0.8",

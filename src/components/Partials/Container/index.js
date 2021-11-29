@@ -24,7 +24,7 @@ Container.propTypes = {
   sidebarItems: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
-      icon: PropTypes.string,
+      icon: PropTypes.node,
       link: PropTypes.string,
       count: PropTypes.number,
     })

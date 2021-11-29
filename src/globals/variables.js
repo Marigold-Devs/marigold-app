@@ -45,3 +45,9 @@ export const deliveryTypes = {
   PICKUP: 'pickup',
   DELIVERY: 'delivery',
 };
+
+export const dateRangeTypes = {
+  DAILY: 'daily',
+  MONTHLY: 'monthly',
+  DATE_RANGE: 'date_range',
+};

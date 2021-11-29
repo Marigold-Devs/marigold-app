@@ -26,7 +26,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { PreordersService } from 'services';
 import '../styles.scss';
-import { CreateTransactionModal } from './CreateTransactionModal/index';
+import { CreateTransactionModal } from './CreateTransactionModal';
 import { ViewTransactionModal } from './ViewTransactionModal';
 
 const transactionColumns = [

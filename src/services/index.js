@@ -6,5 +6,6 @@ export { default as NotificationsService } from './NotificationsService';
 export { default as PreordersService } from './PreordersService';
 export { default as PreorderTransactionsService } from './PreorderTransactionsService';
 export { default as ProductsService } from './ProductsService';
+export { default as ReportsService } from './ReportsService';
 export { default as TokensService } from './TokensService';
 export { default as UnitTypesService } from './UnitTypesService';

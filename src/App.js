@@ -11,6 +11,7 @@ import {
   Preorders,
   Products,
   ViewPreorder,
+  Reports,
 } from 'screens';
 
 const App = () => (
@@ -28,6 +29,8 @@ const App = () => (
         <Route element={<Preorders />} path="preorders" />
         <Route element={<ViewPreorder />} path="preorders/:preorderId" />
         <Route element={<CreatePreorder />} path="preorders/create" />
+
+        <Route element={<Reports />} path="reports" />
 
         <Route element={<Notifications />} path="notifications" />
       </Route>

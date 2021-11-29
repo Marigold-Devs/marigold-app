@@ -1,4 +1,4 @@
-import rootReducer from 'ducks/index';
+import rootReducer from 'ducks';
 import { APP_KEY } from 'globals/variables';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'react-router-redux';

@@ -9,5 +9,7 @@ export { default as usePreorder } from './usePreorder';
 export { default as usePreorders } from './usePreorders';
 export { default as useProduct } from './useProduct';
 export { default as useProducts } from './useProducts';
+export { default as useReportsCustomers } from './useReportsCustomers';
+export { default as useReportsProducts } from './useReportsProducts';
 export { default as useUI } from './useUI';
 export { default as useUnitTypes } from './useUnitTypes';

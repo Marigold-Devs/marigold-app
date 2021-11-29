@@ -7,6 +7,23 @@
 }
 
 .ViewPreorder {
+  &_setPreorderAsComplete {
+    margin-bottom: 20px;
+
+    &_button {
+      margin-left: auto;
+      display: block !important;
+    }
+
+    @include mobile {
+      button {
+        display: block;
+        width: 100%;
+        margin: unset;
+      }
+    }
+  }
+
   &_transaction {
     &_createRow {
       margin-bottom: 20px;

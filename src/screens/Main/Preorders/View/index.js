@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import { Content, PreorderStatus } from 'components';
 import { Box } from 'components/elements';
+import { printOrderSlip } from 'configurePrinter';
 import { formatDateTime } from 'globals/functions';
 import {
   EMPTY_CHARACTER,
@@ -19,6 +20,7 @@ import {
   preorderStatuses,
 } from 'globals/variables';
 import { usePreorder, useUnitTypes } from 'hooks';
+import { jsPDF } from 'jspdf';
 import { upperFirst } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
@@ -49,6 +51,7 @@ const transactionColumns = [
 const Preorders = () => {
   // STATES
   const [isLoading, setIsLoading] = useState(false);
+  const [isPrinting, setIsPrinting] = useState(false);
   const [preorderProducts, setPreorderProducts] = useState([]);
   const [preorderProductsObject, setPreorderProductsObject] = useState({});
   const [unitTypesId, setUnitTypesId] = useState([]);
@@ -103,9 +106,10 @@ const Preorders = () => {
 
           newUnitTypeIds.push(unitTypeId);
 
-          preorderProductData[String(unitTypeId)] = Number(
+          preorderProductData[String(unitTypeId)] = `
+          ${Number(preorderProduct.fulfilled_quantity)} / ${Number(
             preorderProduct.quantity
-          );
+          )}`;
         });
 
         return preorderProductData;
@@ -148,11 +152,12 @@ const Preorders = () => {
       ...filteredUnitTypes.map((unitType) => ({
         title: unitType.name,
         dataIndex: String(unitType.id),
+        align: 'center',
       })),
     ];
   }, [unitTypesId, unitTypes]);
 
-  const updateStatus = async (status) => {
+  const onUpdateStatus = (status) => {
     setIsLoading(true);
 
     PreordersService.edit({ id: params.preorderId, body: { status } })
@@ -166,10 +171,63 @@ const Preorders = () => {
       });
   };
 
+  const onPrint = () => {
+    if (preorder) {
+      setIsPrinting(true);
+      // eslint-disable-next-line new-cap
+      const pdf = new jsPDF('p', 'pt', 'a4');
+
+      pdf.html(printOrderSlip(preorder, unitTypes), {
+        x: 10,
+        y: 10,
+        filename: `Preorder_${preorder.id}`,
+        callback: (instance) => {
+          window.open(instance.output('bloburl').toString());
+          setIsPrinting(false);
+        },
+      });
+    } else {
+      message.error(GENERIC_ERROR_MESSAGE);
+    }
+  };
+
   return (
     <Content className="ViewPreorder" title="Preorder">
       <Spin spinning={isPreorderFetching || isUnitTypesFetching || isLoading}>
         <Box>
+          <Row
+            className="ViewPreorder_setPreorderAsComplete"
+            gutter={[25, 12]}
+            justify="space-between"
+          >
+            <Col sm={12} xs={24}>
+              <Button
+                loading={isPrinting}
+                size="large"
+                type="primary"
+                ghost
+                onClick={onPrint}
+              >
+                Print Preorder
+              </Button>
+            </Col>
+            {preorder?.status === preorderStatuses.APPROVED &&
+              preorder?.preorder_transactions?.length > 0 && (
+                <Col sm={12} xs={24}>
+                  <Button
+                    className="ViewPreorder_setPreorderAsComplete_button"
+                    size="large"
+                    type="primary"
+                    onClick={() => {
+                      onUpdateStatus(preorderStatuses.DELIVERED);
+                    }}
+                  >
+                    Set Preorder As Complete
+                  </Button>
+                </Col>
+              )}
+          </Row>
+
           <Descriptions
             column={{ xs: 1, sm: 1, md: 2 }}
             labelStyle={{ fontWeight: 'bold' }}
@@ -245,7 +303,7 @@ const Preorders = () => {
                     block
                     danger
                     onClick={() => {
-                      updateStatus(preorderStatuses.CANCELLED);
+                      onUpdateStatus(preorderStatuses.CANCELLED);
                     }}
                   >
                     Cancel Preorder
@@ -257,7 +315,7 @@ const Preorders = () => {
                     type="primary"
                     block
                     onClick={() => {
-                      updateStatus(preorderStatuses.APPROVED);
+                      onUpdateStatus(preorderStatuses.APPROVED);
                     }}
                   >
                     Approve Preorder
@@ -276,17 +334,19 @@ const Preorders = () => {
             <Col>
               <Typography.Title level={4}>Transactions</Typography.Title>
             </Col>
-            <Col>
-              <Button
-                size="large"
-                type="primary"
-                onClick={() => {
-                  setCreateTransactionModalVisible(true);
-                }}
-              >
-                <PlusOutlined /> Create Transaction
-              </Button>
-            </Col>
+            {preorder?.status === preorderStatuses.APPROVED && (
+              <Col>
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => {
+                    setCreateTransactionModalVisible(true);
+                  }}
+                >
+                  <PlusOutlined /> Create Transaction
+                </Button>
+              </Col>
+            )}
           </Row>
 
           <Table

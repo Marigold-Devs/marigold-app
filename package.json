@@ -13,7 +13,6 @@
     "server": "cd ../marigold-api && poetry run python3 manage.py runserver"
   },
   "dependencies": {
-    "@ant-design/compatible": "^1.0.8",
     "@ant-design/icons": "^4.7.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",

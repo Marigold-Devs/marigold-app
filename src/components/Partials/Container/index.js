@@ -21,7 +21,14 @@ const Container = ({ loading, loadingText, sidebarItems, children }) => (
 Container.propTypes = {
   loading: PropTypes.bool,
   loadingText: PropTypes.string,
-  sidebarItems: PropTypes.any,
+  sidebarItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      icon: PropTypes.string,
+      link: PropTypes.string,
+      count: PropTypes.number,
+    })
+  ),
   children: PropTypes.node,
 };
 

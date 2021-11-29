@@ -1,7 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Icon } from '@ant-design/compatible';
-
 import { Layout } from 'antd';
 import imgIconAccount from 'assets/images/icon-account.svg';
 import imgIconLogout from 'assets/images/icon-logout.svg';
@@ -51,14 +49,12 @@ const Sidebar = ({ items }) => {
                 ),
               })}
             >
-              <Icon
+              <item.icon
                 className="Sidebar_sidebarList_item_icon"
                 style={{
                   fontSize: 20,
                   color: pathname.startsWith(item.link) ? '#e0bc5d' : '#626b77',
                 }}
-                theme="filled"
-                type={item.icon}
               />
 
               <span className="Sidebar_sidebarList_item_name">{item.name}</span>
@@ -102,7 +98,14 @@ const Sidebar = ({ items }) => {
 };
 
 Sidebar.propTypes = {
-  items: PropTypes.any,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      icon: PropTypes.node,
+      link: PropTypes.string,
+      count: PropTypes.number,
+    })
+  ),
 };
 
 export default Sidebar;

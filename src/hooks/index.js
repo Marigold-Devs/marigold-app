@@ -3,6 +3,8 @@ export { default as useBranches } from './useBranches';
 export { default as useBranchProducts } from './useBranchProducts';
 export { default as useClients } from './useClients';
 export { default as useCustomParams } from './useCustomParams';
+export { default as useNotifications } from './useNotifications';
+export { default as useNotificationsCount } from './useNotificationsCount';
 export { default as usePreorder } from './usePreorder';
 export { default as usePreorders } from './usePreorders';
 export { default as useProduct } from './useProduct';

@@ -7,6 +7,7 @@ import {
   Login,
   Main,
   ModifyProduct,
+  Notifications,
   Preorders,
   Products,
   ViewPreorder,
@@ -27,6 +28,8 @@ const App = () => (
         <Route element={<Preorders />} path="preorders" />
         <Route element={<ViewPreorder />} path="preorders/:preorderId" />
         <Route element={<CreatePreorder />} path="preorders/create" />
+
+        <Route element={<Notifications />} path="notifications" />
       </Route>
       <Route element={<Login />} path="login" />
     </Routes>

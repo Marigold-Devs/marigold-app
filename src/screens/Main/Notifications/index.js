@@ -1,17 +1,16 @@
 import { Spin, Tabs } from 'antd';
 import { Content } from 'components';
 import { Box } from 'components/elements';
-import { useBranches, useCustomParams, useUnitTypes } from 'hooks';
+import { useBranches, useCustomParams } from 'hooks';
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BranchProducts from './BranchProducts';
 
-const Dashboard = () => {
+const Notifications = () => {
   // CUSTOM HOOKS
   const [searchParams] = useSearchParams();
   const { setSearchParams } = useCustomParams();
   const { isFetching: isFetchingBranches, data: branches } = useBranches();
-  const { isFetching: isUnitTypesFetching, data: unitTypes } = useUnitTypes();
 
   // METHODS
   useEffect(() => {
@@ -25,9 +24,9 @@ const Dashboard = () => {
   };
 
   return (
-    <Content title="Dashboard">
+    <Content title="Notifications">
       <Box>
-        <Spin spinning={isFetchingBranches || isUnitTypesFetching}>
+        <Spin spinning={isFetchingBranches}>
           <Tabs
             activeKey={searchParams.get('branchId')}
             type="card"
@@ -35,7 +34,7 @@ const Dashboard = () => {
           >
             {branches.map(({ name, id }) => (
               <Tabs.TabPane key={id} tab={name}>
-                <BranchProducts unitTypes={unitTypes} />
+                <BranchProducts />
               </Tabs.TabPane>
             ))}
           </Tabs>
@@ -45,4 +44,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Notifications;

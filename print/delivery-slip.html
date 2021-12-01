@@ -1,0 +1,188 @@
+<html lang="en">
+  <head>
+    <style>
+      .header {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 1px solid black;
+      }
+
+      .header-text {
+        grid-column: 1 / span 4;
+        text-align: center;
+      }
+
+      .header > div {
+        padding: 2.5px;
+        border-top: 1px solid black;
+      }
+
+      .products table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .products table th,
+      .products table td {
+        border: 1px solid black;
+        text-align: center;
+      }
+
+      .footer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .footer > div {
+        padding: 2.5px;
+        border: 1px solid black;
+      }
+
+      .footer .signature {
+        width: 80%;
+        border-bottom: 1px solid black;
+        margin: 15px auto 0;
+      }
+
+      .footer .signature-label {
+        text-align: center;
+        font-size: 12px;
+      }
+
+      .footer .users {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer .users span {
+        width: 80%;
+        height: 100%;
+        border-bottom: 1px solid black;
+        margin: auto 0;
+        display: block;
+      }
+
+      .footer .users strong {
+        font-size: 14px;
+      }
+
+      .footer .disclaimer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 12px;
+        font-size: 14px;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .font-weight-bold {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="header-text font-weight-bold">DELIVERY RECEIPT</div>
+      <div>
+        <strong>ORDERED BY: </strong>
+      </div>
+      <div>
+        <span class="text-center font-weight-bold">VALUE</span>
+      </div>
+      <div>
+        <strong>DATE: </strong>
+      </div>
+      <div>
+        <span class="text-center">VALUE</span>
+      </div>
+      <div>
+        <strong>ADDRESS: </strong>
+      </div>
+      <div>
+        <span class="text-center">VALUE</span>
+      </div>
+      <div>
+        <strong>RECEIVED BY: </strong>
+      </div>
+      <div>
+        <span class="text-center">VALUE</span>
+      </div>
+      <div>
+        <strong>TIME: </strong>
+      </div>
+      <div>
+        <span class="text-center">VALUE</span>
+      </div>
+      <div>
+        <strong>CONTACT NO: </strong>
+      </div>
+      <div>
+        <span class="text-center">VALUE</span>
+      </div>
+    </div>
+
+    <div class="products">
+      <table>
+        <tr>
+          <th colspan="2">QUANTITY</th>
+          <th>ARTICLES</th>
+          <th>UNIT PRICE</th>
+          <th>AMOUNT</th>
+        </tr>
+        <tr>
+          <td>Alfreds Futterkiste</td>
+          <td>Maria Anders</td>
+          <td>Germany</td>
+          <td>Maria Anders</td>
+          <td>Germany</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <div>
+        <small>Receive the above goods in good order and conditions.</small>
+        <div class="signature"></div>
+        <div class="signature-label">Customer's Complete Name & Signature</div>
+      </div>
+
+      <div class="users">
+        <div>
+          <strong>PREPARED BY: </strong>
+        </div>
+        <div>
+          <span></span>
+        </div>
+        <div>
+          <strong>CHECKED BY: </strong>
+        </div>
+        <div>
+          <span></span>
+        </div>
+        <div>
+          <strong>PULLED-OUT BY: </strong>
+        </div>
+        <div>
+          <span></span>
+        </div>
+        <div>
+          <strong>DELIVERED BY: </strong>
+        </div>
+        <div>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        NOTE: This order slip at the same time serves as the temporary delivery
+        receipt. Our official invoice will be issued upon return of the receipt
+        and fully signed by the customer.
+      </div>
+    </div>
+  </body>
+</html>

@@ -28,3 +28,6 @@ export const formatInPeso = (value, pesoSign = '₱') => {
 
 export const formatDateTime = (datetime) =>
   datetime ? moment(datetime).format('MM/DD/YYYY h:mma') : '';
+
+export const formatDateTimeForServer = (datetime) =>
+  moment(datetime).format('YYYY-MM-DD HH:mm:ss');

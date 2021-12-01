@@ -48,7 +48,7 @@ const transactionColumns = [
   },
 ];
 
-const Preorders = () => {
+const ViewPreorder = () => {
   // STATES
   const [isLoading, setIsLoading] = useState(false);
   const [isPrinting, setIsPrinting] = useState(false);
@@ -387,4 +387,4 @@ const Preorders = () => {
   );
 };
 
-export default Preorders;
+export default ViewPreorder;

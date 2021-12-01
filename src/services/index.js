@@ -2,6 +2,7 @@ export { default as AuthService } from './AuthService';
 export { default as BranchesService } from './BranchesService';
 export { default as BranchProductsService } from './BranchProducts';
 export { default as ClientsService } from './ClientsService';
+export { default as DeliveriesService } from './DeliveriesService';
 export { default as NotificationsService } from './NotificationsService';
 export { default as PreordersService } from './PreordersService';
 export { default as PreorderTransactionsService } from './PreorderTransactionsService';

@@ -1,23 +1,24 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Table } from 'antd';
-import { Content, PreorderStatus } from 'components';
+import { Content, DeliveryStatus } from 'components';
 import { Box } from 'components/elements';
 import { formatDateTime } from 'globals/functions';
-import { useCustomParams, usePreorders } from 'hooks';
+import { useCustomParams, useDeliveries } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import './styles.scss';
 
 const columns = [
   { title: 'ID', dataIndex: 'id' },
   { title: 'Date Created', dataIndex: 'date_created' },
-  { title: 'Date Fulfilled', dataIndex: 'date_fulfilled' },
+  { title: 'Schedule of Delivery', dataIndex: 'schedule_of_delivery' },
+  { title: 'Date Completed', dataIndex: 'date_completed' },
   { title: 'Status', dataIndex: 'status', align: 'center' },
   { title: 'Actions', dataIndex: 'actions' },
 ];
 
-const Preorders = () => {
+const Deliveries = () => {
   // STATES
   const [dataSource, setDataSource] = useState([]);
 
@@ -27,9 +28,9 @@ const Preorders = () => {
   const { setSearchParams } = useCustomParams();
 
   const {
-    isFetching: isPreordersFetching,
-    data: { total, preorders },
-  } = usePreorders({
+    isFetching: isDeliveriesFetching,
+    data: { total, deliveries },
+  } = useDeliveries({
     params: {
       page: searchParams.get('page'),
       pageSize: searchParams.get('pageSize'),
@@ -38,31 +39,27 @@ const Preorders = () => {
 
   // METHODS
   useEffect(() => {
-    const data = preorders.map((preorder) => ({
-      key: preorder.id,
-      id: preorder.id,
-      date_created: formatDateTime(preorder.datetime_created),
-      date_fulfilled: formatDateTime(preorder.datetime_fulfilled),
-      status: <PreorderStatus status={preorder.status} />,
-      actions: (
-        <Button
-          type="link"
-          onClick={() => {
-            navigate(`/preorders/${preorder.id}`);
-          }}
-        >
-          View
-        </Button>
-      ),
-    }));
+    const tableData = deliveries.map((delivery) => {
+      const data = {
+        key: delivery.id,
+        id: delivery.id,
+        date_created: formatDateTime(delivery.datetime_created),
+        schedule_of_delivery: formatDateTime(delivery.datetime_delivery),
+        date_completed: formatDateTime(delivery.datetime_completed),
+        status: <DeliveryStatus status={delivery.status} />,
+        actions: <Link to={`/deliveries/${delivery.id}`}>View</Link>,
+      };
 
-    setDataSource(data);
-  }, [preorders]);
+      return data;
+    });
+
+    setDataSource(tableData);
+  }, [deliveries]);
 
   return (
-    <Content className="Preorders" title="Preorders">
+    <Content className="Deliveries" title="Deliveries">
       <Box>
-        <Row className="Preorders_createRow" justify="end">
+        <Row className="Deliveries_createRow" justify="end">
           <Col>
             <Button
               size="large"
@@ -71,7 +68,7 @@ const Preorders = () => {
                 navigate('create');
               }}
             >
-              <PlusOutlined /> Create Preorder
+              <PlusOutlined /> Create Delivery
             </Button>
           </Col>
         </Row>
@@ -79,7 +76,7 @@ const Preorders = () => {
         <Table
           columns={columns}
           dataSource={dataSource}
-          loading={isPreordersFetching}
+          loading={isDeliveriesFetching}
           pagination={{
             current: searchParams.get('page') || 1,
             total,
@@ -90,7 +87,7 @@ const Preorders = () => {
                 pageSize: newPageSize,
               });
             },
-            disabled: preorders.length === 0,
+            disabled: deliveries.length === 0,
             position: ['bottomCenter'],
             pageSizeOptions: ['10', '20', '50'],
           }}
@@ -102,4 +99,4 @@ const Preorders = () => {
   );
 };
 
-export default Preorders;
+export default Deliveries;

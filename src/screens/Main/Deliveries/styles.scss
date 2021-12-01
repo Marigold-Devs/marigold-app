@@ -1,0 +1,24 @@
+@import '../../../assets/styles/main';
+
+.Deliveries {
+  &_createRow {
+    margin-bottom: 20px;
+  }
+}
+
+.CreateDelivery {
+  &_grandTotal {
+    margin-top: 20px;
+    text-align: right;
+  }
+}
+
+.ViewDelivery {
+  &_setAsDelivered {
+    margin-top: 20px;
+  }
+
+  &_print {
+    margin-bottom: 20px;
+  }
+}

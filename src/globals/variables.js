@@ -41,9 +41,16 @@ export const preorderStatuses = {
   CANCELLED: 'cancelled',
 };
 
+export const deliveryStatuses = {
+  PENDING: 'pending',
+  DELIVERED: 'delivered',
+  CANCELLED: 'cancelled',
+};
+
 export const deliveryTypes = {
   PICKUP: 'pickup',
   DELIVERY: 'delivery',
+  MARKET: 'market',
 };
 
 export const dateRangeTypes = {

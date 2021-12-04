@@ -87,8 +87,7 @@ const CreatePreorder = () => {
               unitTypeId: Yup.number().required(),
               quantity: Yup.number()
                 .required()
-                .positive('Must be greater than zero')
-                .required()
+                .min(0, 'Must not be negative')
                 .label('Quantity'),
             })
           ),
@@ -98,14 +97,14 @@ const CreatePreorder = () => {
   };
 
   // METHODS
-  const handleSuccess = () => {
+  const handleSuccess = (preorderId) => {
     Modal.success({
       title: 'Success',
       content: `Preorder is successfully created. Press the button below to go back to the preorders screen.`,
       keyboard: false,
       okText: 'Proceed',
       onOk: () => {
-        navigate('/preorders');
+        navigate(`/preorders/${preorderId}`);
       },
     });
   };
@@ -127,14 +126,16 @@ const CreatePreorder = () => {
 
                 const preorderProducts = flatten(
                   values.preorderProducts.map((preorderProduct) =>
-                    preorderProduct.productPrices.map((productPrice) => ({
-                      branch_product_id: productPrice.branchProductId,
-                      quantity: productPrice.quantity,
-                    }))
+                    preorderProduct.productPrices
+                      .filter((productPrice) => productPrice.quantity > 0)
+                      .map((productPrice) => ({
+                        branch_product_id: productPrice.branchProductId,
+                        quantity: productPrice.quantity,
+                      }))
                   )
                 );
 
-                await PreordersService.create({
+                const { data } = await PreordersService.create({
                   body: {
                     branch_id: values.branchId,
                     delivery_type: values.deliveryType,
@@ -150,7 +151,7 @@ const CreatePreorder = () => {
                   },
                 });
 
-                handleSuccess();
+                handleSuccess(data.id);
               } catch (e) {
                 console.error(e);
                 setFieldError('response', GENERIC_ERROR_MESSAGE);

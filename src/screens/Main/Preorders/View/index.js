@@ -326,37 +326,41 @@ const ViewPreorder = () => {
           )}
         </Box>
 
-        <Box>
-          <Row
-            className="ViewPreorder_transaction_createRow"
-            justify="space-between"
-          >
-            <Col>
-              <Typography.Title level={4}>Transactions</Typography.Title>
-            </Col>
-            {preorder?.status === preorderStatuses.APPROVED && (
+        {[preorderStatuses.APPROVED, preorderStatuses.DELIVERED].includes(
+          preorder?.status
+        ) && (
+          <Box>
+            <Row
+              className="ViewPreorder_transaction_createRow"
+              justify="space-between"
+            >
               <Col>
-                <Button
-                  size="large"
-                  type="primary"
-                  onClick={() => {
-                    setCreateTransactionModalVisible(true);
-                  }}
-                >
-                  <PlusOutlined /> Create Transaction
-                </Button>
+                <Typography.Title level={4}>Transactions</Typography.Title>
               </Col>
-            )}
-          </Row>
+              {preorder?.status === preorderStatuses.APPROVED && (
+                <Col>
+                  <Button
+                    size="large"
+                    type="primary"
+                    onClick={() => {
+                      setCreateTransactionModalVisible(true);
+                    }}
+                  >
+                    <PlusOutlined /> Create Transaction
+                  </Button>
+                </Col>
+              )}
+            </Row>
 
-          <Table
-            columns={transactionColumns}
-            dataSource={transactionsDataSource}
-            pagination={false}
-            rowKey="key"
-            scroll={{ x: 800 }}
-          />
-        </Box>
+            <Table
+              columns={transactionColumns}
+              dataSource={transactionsDataSource}
+              pagination={false}
+              rowKey="key"
+              scroll={{ x: 800 }}
+            />
+          </Box>
+        )}
 
         {createTransactionModalVisible && (
           <CreateTransactionModal

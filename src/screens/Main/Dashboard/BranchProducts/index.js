@@ -1,21 +1,19 @@
-import { Button, Col, Input, Row, Select, Table, Typography } from 'antd';
+import { Col, Input, Row, Select, Table, Typography } from 'antd';
 import { BranchProductStatus } from 'components';
 import { productStatuses } from 'globals/variables';
 import { useBranchProducts, useCustomParams } from 'hooks';
 import { flatten } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useDebouncedCallback } from 'use-debounce';
-import './styles.scss';
 
 const BranchProducts = ({ unitTypes }) => {
   // STATES
   const [dataSource, setDataSource] = useState([]);
 
   // CUSTOM HOOKS
-  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
   const { setSearchParams } = useCustomParams();
 
@@ -38,15 +36,12 @@ const BranchProducts = ({ unitTypes }) => {
       const data = {
         key: product.id,
         name: (
-          <Button
+          <Link
             className="BranchProducts_productName"
-            type="link"
-            onClick={() => {
-              navigate(`/products?search=${product.name}`);
-            }}
+            to={`/products?search=${product.name}`}
           >
             {product.name}
-          </Button>
+          </Link>
         ),
         status: <BranchProductStatus status={product.status} />,
       };
@@ -72,12 +67,12 @@ const BranchProducts = ({ unitTypes }) => {
     );
 
     return [
-      { title: 'Name', dataIndex: 'name', width: 150, fixed: 'left' },
+      { title: 'Name', dataIndex: 'name', fixed: 'left' },
       ...filteredUnitTypes.map((unitType) => ({
         title: unitType.name,
         dataIndex: String(unitType.id),
       })),
-      { title: 'Status', dataIndex: 'status', width: 150, fixed: 'right' },
+      { title: 'Status', dataIndex: 'status' },
     ];
   }, [products, unitTypes]);
 

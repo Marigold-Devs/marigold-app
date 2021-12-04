@@ -119,7 +119,6 @@ const CreateDelivery = () => {
               quantity: Yup.number()
                 .required()
                 .min(0, 'Must not be negative')
-                .required()
                 .label('Quantity'),
             })
           ),
@@ -179,7 +178,7 @@ const CreateDelivery = () => {
                   )
                 );
 
-                const data = await DeliveriesService.create({
+                const { data } = await DeliveriesService.create({
                   body: {
                     branch_id: values.branchId,
                     delivery_type: values.deliveryType,

@@ -95,10 +95,13 @@ export const printOrderSlip = (preorder, unitTypes) => {
 };
 
 export const printDeliverySlip = (delivery) => {
-  const productsHtml = delivery.delivery_products
-    .map((deliveryProduct) => {
+  let total = 0;
+  const productsHtml = [
+    ...delivery.delivery_products.map((deliveryProduct) => {
       const subtotal =
         Number(deliveryProduct.quantity) * Number(deliveryProduct.price);
+      total += subtotal;
+
       return `
     <tr>
       <td>${deliveryProduct.quantity}</td>
@@ -108,12 +111,22 @@ export const printDeliverySlip = (delivery) => {
       <td>${formatInPeso(subtotal, 'P')}</td>
     </tr>
     `;
-    })
-    .join('');
+    }),
+    `<tr>
+      <td></td>
+      <td></td>
+      <td><b>TOTAL: </b></td>
+      <td></td>
+      <td>${formatInPeso(total, 'P')}</td>
+    </tr>
+    `,
+  ].join('');
 
   const generateHtml = () => `
     <div class="header">
-        <div class="header-text font-weight-bold">DELIVERY RECEIPT</div>
+        <div class="header-text font-weight-bold">DELIVERY RECEIPT - #${
+          delivery.id
+        }</div>
         <div>
           <strong>ORDERED BY:</strong>
         </div>

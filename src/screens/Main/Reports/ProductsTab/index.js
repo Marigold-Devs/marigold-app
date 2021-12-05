@@ -1,5 +1,6 @@
 import { Col, DatePicker, Radio, Row, Select, Table, Typography } from 'antd';
 import { RankIcon } from 'components';
+import { formatInPeso } from 'globals/functions';
 import { dateRangeTypes } from 'globals/variables';
 import { useBranches, useCustomParams, useReportsProducts } from 'hooks';
 import moment from 'moment';
@@ -10,7 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 const columns = [
   { title: 'Rank', dataIndex: 'rank' },
   { title: 'Name', dataIndex: 'name' },
-  { title: 'Total Quantity', dataIndex: 'total_quantity' },
+  { title: 'Total Purchase', dataIndex: 'total_purchase' },
 ];
 
 const ProductsTab = () => {
@@ -50,7 +51,7 @@ const ProductsTab = () => {
           </>
         ),
         name: product.name,
-        total_quantity: product.total_quantity,
+        total_purchase: formatInPeso(product.total_purchase),
       };
     });
 

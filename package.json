@@ -12,7 +12,7 @@
     "prettify": "prettier --write ./src",
     "server": "cd ../marigold-api && poetry run python manage.py runserver",
     "serveBuild": "serve -s build -p 3000",
-    "openBrowser": "start \"\" localhost:3000",
+    "openBrowser": "start \"\" http://localhost:3000/",
     "runAll": "concurrently --kill-others \"npm run server\" \"npm run serveBuild\" \"npm run openBrowser\""
   },
   "dependencies": {

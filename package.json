@@ -10,7 +10,7 @@
     "lint": "cd src && eslint . --ext .jsx --ext .js",
     "lint:fix": "cd src && eslint . --ext .jsx --ext .js --fix",
     "prettify": "prettier --write ./src",
-    "server": "cd ../marigold-api && poetry run python manage.py runserver",
+    "server": "cd ../marigold-api && poetry run python manage.py runserver 0:8000",
     "serveBuild": "serve -s build -p 3000",
     "openBrowser": "start \"\" http://localhost:3000/",
     "runAll": "concurrently --kill-others \"npm run server\" \"npm run serveBuild\""

@@ -10,7 +10,9 @@
     "lint": "cd src && eslint . --ext .jsx --ext .js",
     "lint:fix": "cd src && eslint . --ext .jsx --ext .js --fix",
     "prettify": "prettier --write ./src",
-    "server": "cd ../marigold-api && poetry run python3 manage.py runserver"
+    "serveBuild": "serve -s build",
+    "server": "cd ../marigold-api && poetry run python3 manage.py runserver",
+    "runAll": "concurrently --kill-others \"npm run server\" \"npm run serveBuild\""
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -61,6 +63,7 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^7.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^19.0.0",
     "eslint-config-prettier": "^8.3.0",

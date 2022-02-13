@@ -10,9 +10,10 @@
     "lint": "cd src && eslint . --ext .jsx --ext .js",
     "lint:fix": "cd src && eslint . --ext .jsx --ext .js --fix",
     "prettify": "prettier --write ./src",
-    "serveBuild": "serve -s build -p 3000",
     "server": "cd ../marigold-api && poetry run python manage.py runserver",
-    "runAll": "concurrently --kill-others \"npm run server\" \"npm run serveBuild\""
+    "serveBuild": "serve -s build -p 3000",
+    "openBrowser": "start \"\" http:localhost:3000",
+    "runAll": "concurrently --kill-others \"npm run server\" \"npm run serveBuild\" \"npm run openBrowser\""
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

@@ -6,7 +6,7 @@ import React from 'react';
 import CustomersTab from './CustomersTab';
 import ProductsTab from './ProductsTab';
 
-const Dashboard = () => {
+const Reports = () => {
   // CUSTOM HOOKS
   const { setSearchParams } = useCustomParams();
 
@@ -16,9 +16,9 @@ const Dashboard = () => {
   };
 
   return (
-    <Content title="Dashboard">
+    <Content title="Reports">
       <Box>
-        <Tabs type="card" onTabClick={onTabClick}>
+        <Tabs type="card" destroyInactiveTabPane onTabClick={onTabClick}>
           <Tabs.TabPane key="customers" tab="Customers">
             <CustomersTab />
           </Tabs.TabPane>
@@ -32,4 +32,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Reports;

@@ -95,6 +95,10 @@ export const printOrderSlip = (preorder, unitTypes) => {
 };
 
 export const printDeliverySlip = (delivery) => {
+  const maxProductsInPage = 42;
+  const productsInPage = (delivery.delivery_products.length + 1) * 2; // +1 for total row
+  const isDifferentPage = productsInPage > maxProductsInPage;
+
   let total = 0;
   const productsHtml = [
     ...delivery.delivery_products.map((deliveryProduct) => {
@@ -123,7 +127,7 @@ export const printDeliverySlip = (delivery) => {
   ].join('');
 
   const generateHtml = () => `
-    <div class="header">
+       <div class="header">
         <div class="header-text font-weight-bold">DELIVERY RECEIPT - #${
           delivery.id
         }</div>
@@ -333,8 +337,12 @@ export const printDeliverySlip = (delivery) => {
     </head>
   
     <body>
-      ${generateHtml()}
+      <div style="height: ${isDifferentPage ? '1300px' : 'auto'};">
+        ${generateHtml()}
+      </div>
+
       </br></br>
+
       <div style="color: #00A2FF !important;">
         ${generateHtml()}
       </div>

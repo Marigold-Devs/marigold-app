@@ -3,16 +3,11 @@ import { RankIcon } from 'components';
 import { formatInPeso } from 'globals/functions';
 import { dateRangeTypes } from 'globals/variables';
 import { useBranches, useCustomParams, useReportsProducts } from 'hooks';
+import { flatten } from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
-const columns = [
-  { title: 'Rank', dataIndex: 'rank' },
-  { title: 'Name', dataIndex: 'name' },
-  { title: 'Total Purchase', dataIndex: 'total_purchase' },
-];
 
 const ProductsTab = () => {
   // STATES
@@ -40,10 +35,10 @@ const ProductsTab = () => {
     const pageSize = searchParams.get('pageSize') || 10;
     const rankStart = (Number(page) - 1) * Number(pageSize);
 
-    const data = products.map((product, index) => {
+    const productDataSource = products.map((product, index) => {
       const rank = rankStart + index + 1;
 
-      return {
+      const data = {
         key: product.id,
         rank: (
           <>
@@ -51,11 +46,44 @@ const ProductsTab = () => {
           </>
         ),
         name: product.name,
-        total_purchase: formatInPeso(product.total_purchase),
+        total_sales: formatInPeso(product.total_sales),
       };
+
+      product.product_prices.forEach((productPrice) => {
+        data[String(productPrice.unit_type.id)] = `${formatInPeso(
+          productPrice.total_sales
+        )} - (${productPrice.total_quantity})`;
+      });
+
+      return data;
     });
 
-    setDataSource(data);
+    setDataSource(productDataSource);
+  }, [products]);
+
+  const getColumns = useCallback(() => {
+    const unitTypes = {};
+    flatten(
+      products?.map((product) =>
+        product.product_prices.map((productPrice) => productPrice.unit_type)
+      )
+    ).forEach((unitType) => {
+      unitTypes[unitType.name] = unitType;
+    });
+
+    const unitTypeColumns = Object.keys(unitTypes)
+      .sort()
+      .map((key) => ({
+        title: unitTypes[key].name,
+        dataIndex: String(unitTypes[key].id),
+      }));
+
+    return [
+      { title: 'Rank', dataIndex: 'rank' },
+      { title: 'Name', dataIndex: 'name' },
+      { title: 'Total Sales', dataIndex: 'total_sales' },
+      ...unitTypeColumns,
+    ];
   }, [products]);
 
   return (
@@ -63,7 +91,7 @@ const ProductsTab = () => {
       <Filter branches={branches} />
 
       <Table
-        columns={columns}
+        columns={getColumns()}
         dataSource={dataSource}
         loading={isReportsFetching || isBranchesFetching}
         pagination={{
@@ -81,7 +109,7 @@ const ProductsTab = () => {
           pageSizeOptions: ['10', '20', '50'],
         }}
         rowKey="key"
-        scroll={{ x: 800 }}
+        scroll={{ x: 1250 }}
       />
     </>
   );
@@ -116,7 +144,7 @@ const Filter = ({ branches }) => {
         <Typography.Text strong>Branch</Typography.Text>
         <Select
           style={{ width: '100%' }}
-          value={searchParams.get('branchId') || undefined}
+          value={Number(searchParams.get('branchId')) || undefined}
           allowClear
           onChange={(value) => {
             setSearchParams({ branchId: value });

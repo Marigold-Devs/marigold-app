@@ -102,7 +102,7 @@ const CreatePreorder = () => {
       title: 'Success',
       content: `Preorder is successfully created. Press the button below to go back to the preorders screen.`,
       keyboard: false,
-      okText: 'Proceed',
+      okText: 'View Preorder',
       onOk: () => {
         navigate(`/preorders/${preorderId}`);
       },
@@ -135,23 +135,27 @@ const CreatePreorder = () => {
                   )
                 );
 
-                const { data } = await PreordersService.create({
-                  body: {
-                    branch_id: values.branchId,
-                    delivery_type: values.deliveryType,
-                    supplier: {
-                      id: supplier?.id,
-                      name: values.supplierName,
-                      description: values.supplierDescription,
-                      address: values.supplierAddress,
-                      landline: values.supplierLandline,
-                      phone: values.supplierPhone,
+                if (preorderProducts.length > 0) {
+                  const { data } = await PreordersService.create({
+                    body: {
+                      branch_id: values.branchId,
+                      delivery_type: values.deliveryType,
+                      supplier: {
+                        id: supplier?.id,
+                        name: values.supplierName,
+                        description: values.supplierDescription,
+                        address: values.supplierAddress,
+                        landline: values.supplierLandline,
+                        phone: values.supplierPhone,
+                      },
+                      preorder_products: preorderProducts,
                     },
-                    preorder_products: preorderProducts,
-                  },
-                });
+                  });
 
-                handleSuccess(data.id);
+                  handleSuccess(data.id);
+                } else {
+                  message.error('Please add quantity to products first');
+                }
               } catch (e) {
                 console.error(e);
                 setFieldError('response', GENERIC_ERROR_MESSAGE);
@@ -355,7 +359,7 @@ const PreorderDetails = ({ branches, suppliers, values, onSetFieldValue }) => {
                   setIsEditingDescription(false);
                 }}
               >
-                Finish
+                Save
               </Button>
             </Input.Group>
           ) : (

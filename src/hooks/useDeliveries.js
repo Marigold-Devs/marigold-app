@@ -3,10 +3,11 @@ import { DeliveriesService } from 'services';
 
 const useDeliveries = ({ params }) =>
   useQuery(
-    ['useDeliveries', params.page, params.pageSize],
+    ['useDeliveries', params.page, params.pageSize, params.paymentStatus],
     () =>
       DeliveriesService.list({
         params: {
+          payment_status: params.paymentStatus,
           page: params.page,
           page_size: params.pageSize,
         },

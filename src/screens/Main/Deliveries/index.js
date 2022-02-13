@@ -1,8 +1,9 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Row, Table } from 'antd';
-import { Content, DeliveryStatus } from 'components';
+import { Button, Col, Row, Select, Table, Typography } from 'antd';
+import { Content, DeliveryStatus, PaymentStatus } from 'components';
 import { Box } from 'components/elements';
 import { formatDateTime } from 'globals/functions';
+import { paymentStatuses } from 'globals/variables';
 import { useCustomParams, useDeliveries } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -14,6 +15,8 @@ const columns = [
   { title: 'Date Created', dataIndex: 'date_created' },
   { title: 'Schedule of Delivery', dataIndex: 'schedule_of_delivery' },
   { title: 'Date Completed', dataIndex: 'date_completed' },
+  { title: 'Payment', dataIndex: 'payment', align: 'center' },
+  { title: 'Customer', dataIndex: 'customer' },
   { title: 'Status', dataIndex: 'status', align: 'center' },
   { title: 'Actions', dataIndex: 'actions' },
 ];
@@ -32,6 +35,7 @@ const Deliveries = () => {
     data: { total, deliveries },
   } = useDeliveries({
     params: {
+      paymentStatus: searchParams.get('paymentStatus'),
       page: searchParams.get('page'),
       pageSize: searchParams.get('pageSize'),
     },
@@ -46,6 +50,8 @@ const Deliveries = () => {
         date_created: formatDateTime(delivery.datetime_created),
         schedule_of_delivery: formatDateTime(delivery.datetime_delivery),
         date_completed: formatDateTime(delivery.datetime_completed),
+        payment: <PaymentStatus status={delivery?.payment_status} />,
+        customer: delivery?.customer?.name,
         status: <DeliveryStatus status={delivery.status} />,
         actions: <Link to={`/deliveries/${delivery.id}`}>View</Link>,
       };
@@ -59,7 +65,14 @@ const Deliveries = () => {
   return (
     <Content className="Deliveries" title="Deliveries">
       <Box>
-        <Row className="Deliveries_createRow" justify="end">
+        <Row
+          className="Deliveries_createRow"
+          gutter={[15, 15]}
+          justify="space-between"
+        >
+          <Col md={6} sm={12} span={24}>
+            <Filter />
+          </Col>
           <Col>
             <Button
               size="large"
@@ -96,6 +109,30 @@ const Deliveries = () => {
         />
       </Box>
     </Content>
+  );
+};
+
+const Filter = () => {
+  const [searchParams] = useSearchParams();
+  const { setSearchParams } = useCustomParams();
+
+  return (
+    <Row gutter={[15, 15]}>
+      <Col span={24}>
+        <Typography.Text strong>Status</Typography.Text>
+        <Select
+          style={{ width: '100%' }}
+          value={searchParams.get('paymentStatus')}
+          allowClear
+          onChange={(value) => {
+            setSearchParams({ paymentStatus: value });
+          }}
+        >
+          <Select.Option value={paymentStatuses.UNPAID}>Unpaid</Select.Option>
+          <Select.Option value={paymentStatuses.PAID}>Paid</Select.Option>
+        </Select>
+      </Col>
+    </Row>
   );
 };
 

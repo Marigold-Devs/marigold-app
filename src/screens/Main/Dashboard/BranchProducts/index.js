@@ -13,7 +13,6 @@ const BranchProducts = ({ unitTypes }) => {
   const [dataSource, setDataSource] = useState([]);
 
   // CUSTOM HOOKS
-
   const [searchParams] = useSearchParams();
   const { setSearchParams } = useCustomParams();
 

@@ -47,6 +47,11 @@ export const deliveryStatuses = {
   CANCELLED: 'cancelled',
 };
 
+export const paymentStatuses = {
+  PAID: 'paid',
+  UNPAID: 'unpaid',
+};
+
 export const deliveryTypes = {
   PICKUP: 'pickup',
   DELIVERY: 'delivery',

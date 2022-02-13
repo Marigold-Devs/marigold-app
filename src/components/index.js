@@ -4,5 +4,6 @@ export { default as DeliveryStatus } from './DeliveryStatus';
 export { default as FormError } from './Forms/FormError';
 export { default as Container } from './Partials/Container';
 export { default as Content } from './Partials/Content';
+export { default as PaymentStatus } from './PaymentStatus';
 export { default as PreorderStatus } from './PreorderStatus';
 export { default as RankIcon } from './RankIcon';

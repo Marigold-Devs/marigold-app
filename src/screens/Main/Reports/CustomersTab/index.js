@@ -1,7 +1,9 @@
-import { Table } from 'antd';
+import { Col, DatePicker, Radio, Row, Table, Typography } from 'antd';
 import { RankIcon } from 'components';
 import { formatInPeso } from 'globals/functions';
+import { dateRangeTypes } from 'globals/variables';
 import { useCustomParams, useReportsCustomers } from 'hooks';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -26,6 +28,7 @@ const CustomersTab = () => {
     params: {
       page: searchParams.get('page'),
       pageSize: searchParams.get('pageSize'),
+      dateRange: searchParams.get('dateRange') || dateRangeTypes.DAILY,
     },
   });
 
@@ -54,27 +57,112 @@ const CustomersTab = () => {
   }, [customers]);
 
   return (
-    <Table
-      columns={columns}
-      dataSource={dataSource}
-      loading={isReportsFetching}
-      pagination={{
-        current: searchParams.get('page') || 1,
-        total,
-        pageSize: searchParams.get('pageSize') || 10,
-        onChange: (page, newPageSize) => {
-          setSearchParams({
-            page,
-            pageSize: newPageSize,
-          });
-        },
-        disabled: customers.length === 0,
-        position: ['bottomCenter'],
-        pageSizeOptions: ['10', '20', '50'],
-      }}
-      rowKey="key"
-      scroll={{ x: 800 }}
-    />
+    <>
+      <Filter />
+
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        loading={isReportsFetching}
+        pagination={{
+          current: searchParams.get('page') || 1,
+          total,
+          pageSize: searchParams.get('pageSize') || 10,
+          onChange: (page, newPageSize) => {
+            setSearchParams({
+              page,
+              pageSize: newPageSize,
+            });
+          },
+          disabled: customers.length === 0,
+          position: ['bottomCenter'],
+          pageSizeOptions: ['10', '20', '50'],
+        }}
+        rowKey="key"
+        scroll={{ x: 800 }}
+      />
+    </>
+  );
+};
+
+const Filter = () => {
+  // STATES
+  const [dateRangeType, setDateRangeType] = useState(dateRangeTypes.DAILY);
+
+  // CUSTOM HOOKS
+  const [searchParams] = useSearchParams();
+  const { setSearchParams } = useCustomParams();
+
+  const dateRange =
+    searchParams.get('dateRange')?.toString() || dateRangeTypes.DAILY;
+
+  // METHODS
+  useEffect(() => {
+    if (
+      ![dateRangeTypes.DAILY, dateRangeTypes.MONTHLY].includes(dateRange) &&
+      dateRange?.indexOf(',')
+    ) {
+      setDateRangeType(dateRangeTypes.DATE_RANGE);
+    } else {
+      setDateRangeType(dateRange);
+    }
+  }, [dateRange]);
+
+  return (
+    <Row className="Products_filter" gutter={[15, 15]}>
+      <Col lg={12} span={24}>
+        <Typography.Text style={{ width: '100%', display: 'block' }} strong>
+          Date Range
+        </Typography.Text>
+        <Radio.Group
+          options={[
+            { label: 'Daily', value: dateRangeTypes.DAILY },
+            { label: 'Monthly', value: dateRangeTypes.MONTHLY },
+            {
+              label: 'Select Date Range',
+              value: dateRangeTypes.DATE_RANGE,
+            },
+          ]}
+          optionType="button"
+          value={dateRangeType}
+          onChange={(e) => {
+            const { value } = e.target;
+            setDateRangeType(value);
+
+            if (value !== dateRangeTypes.DATE_RANGE) {
+              setSearchParams({ dateRange: value });
+            }
+          }}
+        />
+
+        {dateRangeType === dateRangeTypes.DATE_RANGE && (
+          <DatePicker.RangePicker
+            defaultPickerValue={
+              dateRange.split(',')?.length === 2
+                ? [
+                    moment(dateRange.split(',')[0]),
+                    moment(dateRange.split(',')[1]),
+                  ]
+                : undefined
+            }
+            defaultValue={
+              dateRange.split(',')?.length === 2
+                ? [
+                    moment(dateRange.split(',')[0]),
+                    moment(dateRange.split(',')[1]),
+                  ]
+                : undefined
+            }
+            format="MM/DD/YY"
+            onCalendarChange={(dates, dateStrings) => {
+              if (dates?.[0] && dates?.[1]) {
+                setSearchParams({ dateRange: dateStrings.join(',') });
+              }
+            }}
+          />
+        )}
+      </Col>
+    </Row>
   );
 };
 

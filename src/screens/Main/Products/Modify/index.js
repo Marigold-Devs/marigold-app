@@ -145,7 +145,7 @@ const ModifyProduct = () => {
                           price_delivery: productPrice.priceDelivery,
                           price_pickup: productPrice.pricePickup,
                           price_special: productPrice.priceSpecial,
-                          reorder_point: productPrice.reorderPoint,
+                          reorder_point: productPrice.reorderPoint || 0,
                         })
                       ),
                     },

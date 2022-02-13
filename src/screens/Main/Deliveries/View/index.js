@@ -6,24 +6,25 @@ import {
   Input,
   message,
   Row,
+  Select,
   Spin,
   Table,
   Typography,
 } from 'antd';
-import { Content, FormError, PreorderStatus } from 'components';
+import { Content, FormError, PaymentStatus, PreorderStatus } from 'components';
 import { Box } from 'components/elements';
 import { printDeliverySlip } from 'configurePrinter';
 import { Form, Formik } from 'formik';
-import { formatDateTime, formatDateTimeForServer } from 'globals/functions';
+import { formatDateTime } from 'globals/functions';
 import {
   deliveryStatuses,
   EMPTY_CHARACTER,
   GENERIC_ERROR_MESSAGE,
+  paymentStatuses,
 } from 'globals/variables';
 import { useDelivery, useUnitTypes } from 'hooks';
 import { jsPDF } from 'jspdf';
 import { upperFirst } from 'lodash';
-import moment from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { DeliveriesService } from 'services';
@@ -36,12 +37,14 @@ const formDetails = {
     checkedBy: '',
     pulledOutBy: '',
     deliveredBy: '',
+    paymentStatus: '',
   },
   schema: Yup.object().shape({
     preparedBy: Yup.string().label('Prepared By'),
     checkedBy: Yup.string().label('Checked By'),
     pulledOutBy: Yup.string().label('Pulled Out By'),
     deliveredBy: Yup.string().label('Delivered By'),
+    paymentStatus: Yup.string().label('Payment Status'),
   }),
 };
 
@@ -261,6 +264,9 @@ const ViewDelivery = () => {
               <Descriptions.Item label="Delivered By">
                 {delivery?.delivered_by || EMPTY_CHARACTER}
               </Descriptions.Item>
+              <Descriptions.Item label="Payment Status">
+                <PaymentStatus status={delivery?.payment_status} />
+              </Descriptions.Item>
             </Descriptions>
           </Box>
         )}
@@ -278,11 +284,11 @@ const ViewDelivery = () => {
                     id: params.deliveryId,
                     body: {
                       status: deliveryStatuses.DELIVERED,
+                      payment_status: values.paymentStatus,
                       prepared_by: values.preparedBy,
                       checked_by: values.checkedBy,
                       pulled_out_by: values.pulledOutBy,
                       delivered_by: values.deliveredBy,
-                      datetime_completed: formatDateTimeForServer(moment()),
                     },
                   });
 
@@ -339,6 +345,26 @@ const ViewDelivery = () => {
                         }}
                       />
                       <FormError name="deliveredBy" />
+                    </Col>
+
+                    <Col sm={12} xs={24}>
+                      <Typography.Text strong>Payment Status</Typography.Text>
+                      <Select
+                        style={{ width: '100%' }}
+                        value={values.payment_status}
+                        allowClear
+                        onChange={(value) => {
+                          setFieldValue('paymentStatus', value);
+                        }}
+                      >
+                        <Select.Option value={paymentStatuses.UNPAID}>
+                          Unpaid
+                        </Select.Option>
+                        <Select.Option value={paymentStatuses.PAID}>
+                          Paid
+                        </Select.Option>
+                      </Select>
+                      <FormError name="paymentStatus" />
                     </Col>
                   </Row>
 

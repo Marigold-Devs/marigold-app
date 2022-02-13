@@ -3,12 +3,13 @@ import { ReportsService } from 'services';
 
 const useReportsCustomers = ({ params }) =>
   useQuery(
-    ['useReportsCustomers', params.page, params.pageSize],
+    ['useReportsCustomers', params.page, params.pageSize, params.dateRange],
     () =>
       ReportsService.listTopPayingCustomers({
         params: {
           page: params.page,
           page_size: params.pageSize,
+          date_range: params.dateRange,
         },
       }),
     {

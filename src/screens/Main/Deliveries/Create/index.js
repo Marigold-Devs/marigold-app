@@ -178,32 +178,36 @@ const CreateDelivery = () => {
                   )
                 );
 
-                const { data } = await DeliveriesService.create({
-                  body: {
-                    branch_id: values.branchId,
-                    delivery_type: values.deliveryType,
-                    datetime_delivery: formatDateTimeForServer(
-                      moment(values.datetimeDelivery)
-                    ),
-                    customer: {
-                      id: customer?.id,
-                      name: values.customerName,
-                      description: values.customerDescription,
-                      address: values.customerAddress,
-                      landline:
-                        values.customerLandline.length > 0
-                          ? values.customerLandline
-                          : undefined,
-                      phone:
-                        values.customerPhone.length > 0
-                          ? values.customerPhone
-                          : undefined,
+                if (deliveryProducts.length > 0) {
+                  const { data } = await DeliveriesService.create({
+                    body: {
+                      branch_id: values.branchId,
+                      delivery_type: values.deliveryType,
+                      datetime_delivery: formatDateTimeForServer(
+                        moment(values.datetimeDelivery)
+                      ),
+                      customer: {
+                        id: customer?.id,
+                        name: values.customerName,
+                        description: values.customerDescription,
+                        address: values.customerAddress,
+                        landline:
+                          values.customerLandline.length > 0
+                            ? values.customerLandline
+                            : undefined,
+                        phone:
+                          values.customerPhone.length > 0
+                            ? values.customerPhone
+                            : undefined,
+                      },
+                      delivery_products: deliveryProducts,
                     },
-                    delivery_products: deliveryProducts,
-                  },
-                });
+                  });
 
-                handleSuccess(data.id);
+                  handleSuccess(data.id);
+                } else {
+                  message.error('Please add quantity to products first');
+                }
               } catch (e) {
                 console.error(e);
                 message.error(GENERIC_ERROR_MESSAGE);
@@ -274,7 +278,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
     <Box>
       <Row gutter={[15, 15]}>
         <Col sm={12} xs={24}>
-          <Typography.Text strong>Branch Destination</Typography.Text>
+          <Typography.Text strong>Branch Source</Typography.Text>
           <Select
             style={{ width: '100%' }}
             value={values.branchId}
@@ -430,7 +434,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
                   setIsEditingDescription(false);
                 }}
               >
-                Finish
+                Save
               </Button>
             </Input.Group>
           ) : (
@@ -514,6 +518,7 @@ const ProductsAll = ({ values, onSetFieldValue }) => {
                           priceMarket: productPrice.price_market,
                           priceDelivery: productPrice.price_delivery,
                           pricePickup: productPrice.price_pickup,
+                          balance: productPrice.balance,
                           quantity: 0,
                         })
                       ),

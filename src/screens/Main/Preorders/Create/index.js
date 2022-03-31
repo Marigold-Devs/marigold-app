@@ -100,7 +100,7 @@ const CreatePreorder = () => {
   const handleSuccess = (preorderId) => {
     Modal.success({
       title: 'Success',
-      content: `Preorder is successfully created. Press the button below to go back to the preorders screen.`,
+      content: `Preorder is successfully created.`,
       keyboard: false,
       okText: 'View Preorder',
       onOk: () => {

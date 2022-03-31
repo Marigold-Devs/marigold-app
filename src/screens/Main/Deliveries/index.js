@@ -119,7 +119,7 @@ const Filter = () => {
   return (
     <Row gutter={[15, 15]}>
       <Col span={24}>
-        <Typography.Text strong>Status</Typography.Text>
+        <Typography.Text strong>Payment Status</Typography.Text>
         <Select
           style={{ width: '100%' }}
           value={searchParams.get('paymentStatus')}

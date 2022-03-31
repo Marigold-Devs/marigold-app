@@ -183,7 +183,7 @@ const Products = () => {
             pageSizeOptions: ['10', '20', '50'],
           }}
           rowKey="key"
-          scroll={{ x: 800 }}
+          scroll={{ x: 1000 }}
         />
       </Box>
 

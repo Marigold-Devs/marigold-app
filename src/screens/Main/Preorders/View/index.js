@@ -1,9 +1,11 @@
 import { PlusOutlined } from '@ant-design/icons';
 import {
+  Alert,
   Button,
   Col,
   Descriptions,
   Divider,
+  Input,
   message,
   Row,
   Spin,
@@ -19,11 +21,12 @@ import {
   GENERIC_ERROR_MESSAGE,
   preorderStatuses,
 } from 'globals/variables';
-import { usePreorder, useUnitTypes } from 'hooks';
+import { usePreorderEdit, usePreorderRetrieve, useUnitTypes } from 'hooks';
 import { jsPDF } from 'jspdf';
 import { upperFirst } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import { PreordersService } from 'services';
 import '../styles.scss';
 import { CreateTransactionModal } from './CreateTransactionModal';
@@ -60,17 +63,20 @@ const ViewPreorder = () => {
   const [transactionsDataSource, setTransactionsDataSource] = useState([]);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
+  const [description, setDescription] = useState('');
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+
   // CUSTOM HOOKS
   const params = useParams();
-
   const { isFetching: isUnitTypesFetching, data: unitTypes } = useUnitTypes();
   const {
     isFetching: isPreorderFetching,
     data: preorder,
     refetch: refetchPreorder,
-  } = usePreorder({
+  } = usePreorderRetrieve({
     id: params.preorderId,
   });
+  const { isLoading: isEditing, mutateAsync: editPreorder } = usePreorderEdit();
 
   // METHODS
   useEffect(() => {
@@ -117,6 +123,8 @@ const ViewPreorder = () => {
     );
 
     setUnitTypesId(newUnitTypeIds);
+
+    setDescription(preorder?.description || '');
   }, [preorder]);
 
   useEffect(() => {
@@ -255,6 +263,50 @@ const ViewPreorder = () => {
             <Descriptions.Item label="Status">
               <PreorderStatus status={preorder?.status} />
             </Descriptions.Item>
+            <Descriptions.Item label="Description" span={2}>
+              {isEditingDescription ? (
+                <Input.Group compact>
+                  <Input
+                    style={{ width: 'calc(100% - 80px)' }}
+                    value={description}
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                    }}
+                  />
+                  <Button
+                    loading={isEditing}
+                    type="primary"
+                    onClick={async () => {
+                      await editPreorder({
+                        id: preorder.id,
+                        description,
+                      });
+
+                      setIsEditingDescription(false);
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Input.Group>
+              ) : (
+                <Alert
+                  action={
+                    <Button
+                      size="small"
+                      type="link"
+                      onClick={() => {
+                        setIsEditingDescription(true);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  }
+                  description={description}
+                  type="info"
+                  showIcon
+                />
+              )}
+            </Descriptions.Item>
           </Descriptions>
 
           <Divider />
@@ -285,11 +337,16 @@ const ViewPreorder = () => {
 
           <Divider />
 
+          <div className="mb-4 d-flex justify-end">
+            <Button size="large" type="primary" ghost>
+              <Link to={`/preorders/${preorder.id}/edit`}>Edit Products</Link>
+            </Button>
+          </div>
+
           <Table
             columns={getPreorderProductColumns()}
             dataSource={preorderProducts}
             pagination={false}
-            rowKey="key"
             scroll={{ x: 800 }}
           />
 
@@ -330,10 +387,7 @@ const ViewPreorder = () => {
           preorder?.status
         ) && (
           <Box>
-            <Row
-              className="ViewPreorder_transaction_createRow"
-              justify="space-between"
-            >
+            <Row className="mb-4" justify="space-between">
               <Col>
                 <Typography.Title level={4}>Transactions</Typography.Title>
               </Col>
@@ -356,7 +410,6 @@ const ViewPreorder = () => {
               columns={transactionColumns}
               dataSource={transactionsDataSource}
               pagination={false}
-              rowKey="key"
               scroll={{ x: 800 }}
             />
           </Box>

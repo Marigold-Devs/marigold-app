@@ -7,7 +7,7 @@ export { default as useDeliveries } from './useDeliveries';
 export { default as useDelivery } from './useDelivery';
 export { default as useNotifications } from './useNotifications';
 export { default as useNotificationsCount } from './useNotificationsCount';
-export { default as usePreorder } from './usePreorder';
+export * from './usePreorders';
 export { default as usePreorders } from './usePreorders';
 export { default as useProduct } from './useProduct';
 export { default as useProducts } from './useProducts';

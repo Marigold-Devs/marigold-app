@@ -74,7 +74,7 @@ const Products = () => {
         key: product.id,
         name: (
           <Button
-            className="Products_productName"
+            className="pa-0"
             type="link"
             onClick={() => {
               setSelectedProduct(product);
@@ -87,7 +87,8 @@ const Products = () => {
         actions: (
           <Space size="small">
             <Button
-              type="link"
+              type="primary"
+              ghost
               onClick={() => {
                 navigate(`/products/${product.id}`);
               }}
@@ -104,7 +105,7 @@ const Products = () => {
                 deleteProduct(product.id);
               }}
             >
-              <Button type="link" danger>
+              <Button type="primary" danger ghost>
                 Delete
               </Button>
             </Popconfirm>
@@ -135,7 +136,7 @@ const Products = () => {
     );
 
     return [
-      { title: 'Name', dataIndex: 'name', width: 150, fixed: 'left' },
+      { title: 'Name', dataIndex: 'name', width: 250, fixed: 'left' },
       { title: 'Unit Cost', dataIndex: 'unitCost' },
       ...filteredUnitTypes.map((unitType) => ({
         title: unitType.name,
@@ -148,19 +149,17 @@ const Products = () => {
   return (
     <Content className="Products" title="Products">
       <Box>
-        <Row className="Products_createRow" justify="end">
-          <Col>
-            <Button
-              size="large"
-              type="primary"
-              onClick={() => {
-                navigate('create');
-              }}
-            >
-              <PlusOutlined /> Create Product
-            </Button>
-          </Col>
-        </Row>
+        <div className="mb-4 d-flex justify-end">
+          <Button
+            size="large"
+            type="primary"
+            onClick={() => {
+              navigate('create');
+            }}
+          >
+            <PlusOutlined /> Create Product
+          </Button>
+        </div>
 
         <Filter onSetPriceType={setSelectedPriceType} />
 
@@ -182,8 +181,7 @@ const Products = () => {
             position: ['bottomCenter'],
             pageSizeOptions: ['10', '20', '50'],
           }}
-          rowKey="key"
-          scroll={{ x: 1000 }}
+          scroll={{ x: 1500 }}
         />
       </Box>
 
@@ -209,7 +207,7 @@ const Filter = ({ onSetPriceType }) => {
   }, 500);
 
   return (
-    <Row className="Products_filter" gutter={[15, 15]}>
+    <Row className="mb-4" gutter={[16, 16]}>
       <Col lg={12} span={24}>
         <Typography.Text strong>Search</Typography.Text>
         <Input

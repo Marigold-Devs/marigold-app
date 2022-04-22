@@ -67,7 +67,7 @@ const Deliveries = () => {
       <Box>
         <Row
           className="Deliveries_createRow"
-          gutter={[15, 15]}
+          gutter={[16, 16]}
           justify="space-between"
         >
           <Col md={6} sm={12} span={24}>
@@ -104,7 +104,6 @@ const Deliveries = () => {
             position: ['bottomCenter'],
             pageSizeOptions: ['10', '20', '50'],
           }}
-          rowKey="key"
           scroll={{ x: 800 }}
         />
       </Box>
@@ -117,7 +116,7 @@ const Filter = () => {
   const { setSearchParams } = useCustomParams();
 
   return (
-    <Row gutter={[15, 15]}>
+    <Row gutter={[16, 16]}>
       <Col span={24}>
         <Typography.Text strong>Payment Status</Typography.Text>
         <Select

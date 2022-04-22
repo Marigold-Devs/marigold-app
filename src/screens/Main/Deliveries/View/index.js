@@ -235,7 +235,6 @@ const ViewDelivery = () => {
             columns={getColumns()}
             dataSource={dataSource}
             pagination={false}
-            rowKey="key"
             scroll={{ x: 800 }}
           />
         </Box>

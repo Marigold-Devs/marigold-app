@@ -3,8 +3,7 @@ import { NotificationsService } from 'services';
 
 const useNotificationsCount = () =>
   useQuery('useNotificationsCount', () => NotificationsService.count(), {
-    refetchOnWindowFocus: false,
-    placeholderData: { data: 0 },
+    initialData: { data: 0 },
     select: (query) => query.data,
     refetchInterval: 2500,
   });

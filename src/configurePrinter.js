@@ -9,13 +9,13 @@ export const printOrderSlip = (preorder, unitTypes) => {
     ).name;
 
     return {
-      name: `${preorderProduct.product_name} (${unitTypeName})`,
+      name: `${preorderProduct.product.name} (${unitTypeName})`,
       quantity: preorderProduct.quantity,
     };
   });
 
   const data = `
-		<div style="width: 430pt; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 10pt; line-height: 100%">
+		<div style="width: 430pt; font-family: 'Courier', Geneva, Tahoma, sans-serif; font-size: 10pt; line-height: 100%">
 			<div style="text-align: center;">
 					<div style="font-size: 15pt;">Marigold Store</div>
 					<div>[ORDER SLIP]</div>

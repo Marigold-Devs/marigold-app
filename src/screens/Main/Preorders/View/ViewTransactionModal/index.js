@@ -105,7 +105,6 @@ export const ViewTransactionModal = ({
         columns={getColumns()}
         dataSource={dataSource}
         pagination={false}
-        rowKey="key"
         scroll={{ x: 600 }}
       />
     </Modal>

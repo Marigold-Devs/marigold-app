@@ -13,7 +13,7 @@
 /coverage
 
 # production
-# /build Note: temporarily add build in the repo
+/build
 /deployment/build
 
 # misc

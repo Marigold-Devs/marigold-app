@@ -1,10 +1,4 @@
-@import '../../../assets/styles/main';
-
-.Preorders {
-  &_createRow {
-    margin-bottom: 20px;
-  }
-}
+@use 'assets/styles/main' as *;
 
 .ViewPreorder {
   &_setPreorderAsComplete {
@@ -21,12 +15,6 @@
         width: 100%;
         margin: unset;
       }
-    }
-  }
-
-  &_transaction {
-    &_createRow {
-      margin-bottom: 20px;
     }
   }
 }

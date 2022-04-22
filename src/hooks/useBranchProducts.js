@@ -1,33 +1,34 @@
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from 'globals/variables';
 import { useQuery } from 'react-query';
 import { BranchProductsService } from 'services';
 
-const useBranchProducts = ({ params }) =>
+const useBranchProducts = ({ params, options }) =>
   useQuery(
     [
       'useBranchProducts',
-      params.page,
-      params.pageSize,
-      params.search,
-      params.branchId,
-      params.status,
+      params?.branchId,
+      params?.page,
+      params?.pageSize,
+      params?.search,
+      params?.status,
     ],
     () =>
       BranchProductsService.list({
         params: {
-          page: params.page,
-          page_size: params.pageSize,
-          branch_id: params.branchId,
-          search: params.search,
-          status: params.status,
+          branch_id: params?.branchId,
+          page_size: params?.pageSize || DEFAULT_PAGE_SIZE,
+          page: params?.page || DEFAULT_PAGE,
+          search: params?.search,
+          status: params?.status,
         },
       }),
     {
-      refetchOnWindowFocus: false,
-      placeholderData: { data: { results: [], count: 0 } },
+      initialData: { data: { results: [], count: 0 } },
       select: (query) => ({
         products: query.data.results,
         total: query.data.count,
       }),
+      ...options,
     }
   );
 

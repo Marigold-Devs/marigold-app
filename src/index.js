@@ -15,7 +15,14 @@ import reportWebVitals from './reportWebVitals';
 const store = configureStore();
 configureAxios(store);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 ReactDOM.render(
   <QueryClientProvider client={queryClient}>

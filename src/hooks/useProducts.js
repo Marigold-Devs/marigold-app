@@ -1,24 +1,26 @@
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from 'globals/variables';
 import { useQuery } from 'react-query';
 import { ProductsService } from 'services';
 
-const useProducts = ({ params }) =>
+const useProducts = ({ params, options }) =>
   useQuery(
-    ['useProducts', params.page, params.pageSize, params.search],
+    ['useProducts', params?.page, params?.pageSize, params?.search],
     () =>
       ProductsService.list({
         params: {
-          page: params.page,
-          page_size: params.pageSize,
-          search: params.search,
+          page: params?.page || DEFAULT_PAGE,
+          page_size: params?.pageSize || DEFAULT_PAGE_SIZE,
+          search: params?.search,
+          ids: params?.ids,
         },
       }),
     {
-      refetchOnWindowFocus: false,
-      placeholderData: { data: { results: [], count: 0 } },
+      initialData: { data: { results: [], count: 0 } },
       select: (query) => ({
         products: query.data.results,
         total: query.data.count,
       }),
+      ...options,
     }
   );
 

@@ -221,8 +221,6 @@ const CreateDelivery = () => {
         >
           {({ values, errors, setFieldValue }) => (
             <Form style={{ width: '100%' }}>
-              {console.log('errors', errors)}
-              {console.log('values', values)}
               <Spin spinning={isLoading}>
                 <DeliveryDetails
                   branches={branches}
@@ -276,7 +274,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
 
   return (
     <Box>
-      <Row gutter={[15, 15]}>
+      <Row gutter={[16, 16]}>
         <Col sm={12} xs={24}>
           <Typography.Text strong>Branch Source</Typography.Text>
           <Select
@@ -565,7 +563,6 @@ const ProductsAll = ({ values, onSetFieldValue }) => {
         position: ['bottomCenter'],
         pageSizeOptions: ['10', '20', '50'],
       }}
-      rowKey="key"
     />
   );
 };
@@ -675,7 +672,6 @@ const ProductsSelected = ({ values, onSetFieldValue }) => {
         dataSource={dataSource}
         loading={isUnitTypesFetching}
         pagination={false}
-        rowKey="key"
         scroll={{ x: 800 }}
       />
 

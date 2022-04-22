@@ -1,18 +1,4 @@
-@import '../../../assets/styles/main';
-
-.Products {
-  &_createRow {
-    margin-bottom: 20px;
-  }
-
-  &_productName {
-    padding: 0 !important;
-  }
-
-  &_filter {
-    margin-bottom: 20px;
-  }
-}
+@use 'assets/styles/main' as *;
 
 .ModifyProduct {
   &_btnAddPrice {

@@ -11,8 +11,7 @@ const useClients = ({ params }) =>
         },
       }),
     {
-      refetchOnWindowFocus: false,
-      placeholderData: { data: [] },
+      initialData: { data: [] },
       select: (query) => query.data,
     }
   );

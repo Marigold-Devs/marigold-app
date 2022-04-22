@@ -108,7 +108,6 @@ const ProductsTab = () => {
           position: ['bottomCenter'],
           pageSizeOptions: ['10', '20', '50'],
         }}
-        rowKey="key"
         scroll={{ x: 1250 }}
       />
     </>
@@ -139,7 +138,7 @@ const Filter = ({ branches }) => {
   }, [dateRange]);
 
   return (
-    <Row className="Products_filter" gutter={[15, 15]}>
+    <Row className="Products_filter" gutter={[16, 16]}>
       <Col lg={12} span={24}>
         <Typography.Text strong>Branch</Typography.Text>
         <Select

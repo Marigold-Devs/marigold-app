@@ -5,6 +5,9 @@ export const GENERIC_ERROR_MESSAGE =
 
 export const EMPTY_CHARACTER = '—';
 
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_PAGE_SIZE = 10;
+
 // Others
 export const userTypes = {
   MANAGER: 'manager',

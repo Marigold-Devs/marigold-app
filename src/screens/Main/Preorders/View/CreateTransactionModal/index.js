@@ -148,7 +148,6 @@ export const CreateTransactionModal = ({
             dataSource={dataSource}
             loading={isLoading}
             pagination={false}
-            rowKey="key"
             scroll={{ x: 600 }}
           />
         </Form>

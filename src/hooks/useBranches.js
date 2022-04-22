@@ -12,8 +12,7 @@ const useBranches = () =>
         },
       }),
     {
-      refetchOnWindowFocus: false,
-      placeholderData: { data: { results: [] } },
+      initialData: { data: { results: [] } },
       select: (query) => query?.data?.results,
     }
   );

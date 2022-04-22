@@ -35,12 +35,7 @@ const BranchProducts = ({ unitTypes }) => {
       const data = {
         key: product.id,
         name: (
-          <Link
-            className="BranchProducts_productName"
-            to={`/products?search=${product.name}`}
-          >
-            {product.name}
-          </Link>
+          <Link to={`/products?search=${product.name}`}>{product.name}</Link>
         ),
         status: <BranchProductStatus status={product.status} />,
       };
@@ -97,8 +92,7 @@ const BranchProducts = ({ unitTypes }) => {
           position: ['bottomCenter'],
           pageSizeOptions: ['10', '20', '50'],
         }}
-        rowKey="key"
-        scroll={{ x: 800 }}
+        scroll={{ x: 1000 }}
       />
     </>
   );
@@ -113,7 +107,7 @@ const Filter = () => {
   }, 500);
 
   return (
-    <Row className="Products_filter" gutter={[15, 15]}>
+    <Row className="mb-4" gutter={[16, 16]}>
       <Col lg={12} span={24}>
         <Typography.Text strong>Search</Typography.Text>
         <Input

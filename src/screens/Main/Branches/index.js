@@ -6,7 +6,6 @@ import { useBranches } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { BranchesService } from 'services';
 import { ModifyBranchModal } from './components/ModifyBranchModal';
-import './styles.scss';
 
 const columns = [
   { title: 'Name', dataIndex: 'name' },
@@ -82,22 +81,19 @@ const Branches = () => {
   }, [branches]);
 
   return (
-    <Content className="Branches" title="Branches">
+    <Content title="Branches">
       <Box>
-        <Row className="Branches_createRow" justify="end">
-          <Col>
-            <Button size="large" type="primary" onClick={onCreate}>
-              <PlusOutlined /> Create Branch
-            </Button>
-          </Col>
-        </Row>
+        <div className="mb-4 d-flex justify-end">
+          <Button size="large" type="primary" onClick={onCreate}>
+            <PlusOutlined /> Create Branch
+          </Button>
+        </div>
 
         <Table
           columns={columns}
           dataSource={dataSource}
           loading={isFetching}
           pagination={false}
-          rowKey="key"
         />
 
         {modifyBranchModalVisible && (

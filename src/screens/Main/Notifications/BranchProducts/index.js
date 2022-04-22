@@ -59,7 +59,6 @@ const BranchProducts = () => {
         position: ['bottomCenter'],
         pageSizeOptions: ['10', '20', '50'],
       }}
-      rowKey="key"
       scroll={{ x: 800 }}
     />
   );

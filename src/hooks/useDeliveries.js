@@ -13,8 +13,7 @@ const useDeliveries = ({ params }) =>
         },
       }),
     {
-      refetchOnWindowFocus: false,
-      placeholderData: { data: { results: [], count: 0 } },
+      initialData: { data: { results: [], count: 0 } },
       select: (query) => ({
         deliveries: query.data.results,
         total: query.data.count,

@@ -78,7 +78,6 @@ const CustomersTab = () => {
           position: ['bottomCenter'],
           pageSizeOptions: ['10', '20', '50'],
         }}
-        rowKey="key"
         scroll={{ x: 800 }}
       />
     </>
@@ -109,7 +108,7 @@ const Filter = () => {
   }, [dateRange]);
 
   return (
-    <Row className="Products_filter" gutter={[15, 15]}>
+    <Row className="Products_filter" gutter={[16, 16]}>
       <Col lg={12} span={24}>
         <Typography.Text style={{ width: '100%', display: 'block' }} strong>
           Date Range

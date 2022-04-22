@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import {
   Branches,
   CreateDelivery,
-  CreatePreorder,
+  ModifyPreorder,
   Dashboard,
   Deliveries,
   Login,
@@ -31,7 +31,8 @@ const App = () => (
 
         <Route element={<Preorders />} path="preorders" />
         <Route element={<ViewPreorder />} path="preorders/:preorderId" />
-        <Route element={<CreatePreorder />} path="preorders/create" />
+        <Route element={<ModifyPreorder />} path="preorders/:preorderId/edit" />
+        <Route element={<ModifyPreorder />} path="preorders/create" />
 
         <Route element={<Deliveries />} path="deliveries" />
         <Route element={<ViewDelivery />} path="deliveries/:deliveryId" />

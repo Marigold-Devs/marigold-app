@@ -3,7 +3,11 @@ import { Button, Col, Row, Select, Table, Typography } from 'antd';
 import { Content, DeliveryStatus, PaymentStatus } from 'components';
 import { Box } from 'components/elements';
 import { formatDateTime } from 'globals/functions';
-import { paymentStatuses } from 'globals/variables';
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  paymentStatuses,
+} from 'globals/variables';
 import { useCustomParams, useDeliveries } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -90,9 +94,9 @@ const Deliveries = () => {
           dataSource={dataSource}
           loading={isDeliveriesFetching}
           pagination={{
-            current: searchParams.get('page') || 1,
+            current: Number(searchParams.get('page')) || DEFAULT_PAGE,
             total,
-            pageSize: searchParams.get('pageSize') || 10,
+            pageSize: Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE,
             onChange: (page, newPageSize) => {
               setSearchParams({
                 page,

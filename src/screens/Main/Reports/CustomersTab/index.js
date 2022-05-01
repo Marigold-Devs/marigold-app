@@ -1,7 +1,11 @@
 import { Col, DatePicker, Radio, Row, Table, Typography } from 'antd';
 import { RankIcon } from 'components';
 import { formatInPeso } from 'globals/functions';
-import { dateRangeTypes } from 'globals/variables';
+import {
+  dateRangeTypes,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from 'globals/variables';
 import { useCustomParams, useReportsCustomers } from 'hooks';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -34,8 +38,8 @@ const CustomersTab = () => {
 
   // METHODS
   useEffect(() => {
-    const page = searchParams.get('page') || 1;
-    const pageSize = searchParams.get('pageSize') || 10;
+    const page = searchParams.get('page') || DEFAULT_PAGE;
+    const pageSize = searchParams.get('pageSize') || DEFAULT_PAGE_SIZE;
     const rankStart = (Number(page) - 1) * Number(pageSize);
 
     const data = customers.map((customer, index) => {
@@ -65,9 +69,9 @@ const CustomersTab = () => {
         dataSource={dataSource}
         loading={isReportsFetching}
         pagination={{
-          current: searchParams.get('page') || 1,
+          current: Number(searchParams.get('page')) || DEFAULT_PAGE,
           total,
-          pageSize: searchParams.get('pageSize') || 10,
+          pageSize: Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE,
           onChange: (page, newPageSize) => {
             setSearchParams({
               page,

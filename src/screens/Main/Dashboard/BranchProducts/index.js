@@ -1,6 +1,10 @@
 import { Col, Input, Row, Select, Table, Typography } from 'antd';
 import { BranchProductStatus } from 'components';
-import { productStatuses } from 'globals/variables';
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  productStatuses,
+} from 'globals/variables';
 import { useBranchProducts, useCustomParams } from 'hooks';
 import { flatten } from 'lodash';
 import PropTypes from 'prop-types';
@@ -79,9 +83,9 @@ const BranchProducts = ({ unitTypes }) => {
         dataSource={dataSource}
         loading={isBranchProductsFetching}
         pagination={{
-          current: searchParams.get('page') || 1,
+          current: Number(searchParams.get('page')) || DEFAULT_PAGE,
           total,
-          pageSize: searchParams.get('pageSize') || 10,
+          pageSize: Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE,
           onChange: (page, newPageSize) => {
             setSearchParams({
               page,

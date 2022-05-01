@@ -339,11 +339,15 @@ const ViewPreorder = () => {
 
           <Divider />
 
-          <div className="mb-4 d-flex justify-end">
-            <Button size="large" type="primary" ghost>
-              <Link to={`/preorders/${preorder?.id}/edit`}>Edit Products</Link>
-            </Button>
-          </div>
+          {preorder?.status === preorderStatuses.PENDING && (
+            <div className="mb-4 d-flex justify-end">
+              <Button size="large" type="primary" ghost>
+                <Link to={`/preorders/${preorder?.id}/edit`}>
+                  Edit Products
+                </Link>
+              </Button>
+            </div>
+          )}
 
           <Table
             columns={getPreorderProductColumns()}

@@ -1,7 +1,11 @@
 import { Col, DatePicker, Radio, Row, Select, Table, Typography } from 'antd';
 import { RankIcon } from 'components';
 import { formatInPeso } from 'globals/functions';
-import { dateRangeTypes } from 'globals/variables';
+import {
+  dateRangeTypes,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from 'globals/variables';
 import { useBranches, useCustomParams, useReportsProducts } from 'hooks';
 import { flatten } from 'lodash';
 import moment from 'moment';
@@ -31,8 +35,8 @@ const ProductsTab = () => {
 
   // METHODS
   useEffect(() => {
-    const page = searchParams.get('page') || 1;
-    const pageSize = searchParams.get('pageSize') || 10;
+    const page = searchParams.get('page') || DEFAULT_PAGE;
+    const pageSize = searchParams.get('pageSize') || DEFAULT_PAGE_SIZE;
     const rankStart = (Number(page) - 1) * Number(pageSize);
 
     const productDataSource = products.map((product, index) => {
@@ -95,9 +99,9 @@ const ProductsTab = () => {
         dataSource={dataSource}
         loading={isReportsFetching || isBranchesFetching}
         pagination={{
-          current: searchParams.get('page') || 1,
+          current: Number(searchParams.get('page')) || DEFAULT_PAGE,
           total,
-          pageSize: searchParams.get('pageSize') || 10,
+          pageSize: Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE,
           onChange: (page, newPageSize) => {
             setSearchParams({
               page,

@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import { BranchProductStatus } from 'components';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from 'globals/variables';
 import { useCustomParams, useNotifications } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -46,9 +47,9 @@ const BranchProducts = () => {
       dataSource={dataSource}
       loading={isNotificationsFetching}
       pagination={{
-        current: searchParams.get('page') || 1,
+        current: Number(searchParams.get('page')) || DEFAULT_PAGE,
         total,
-        pageSize: searchParams.get('pageSize') || 10,
+        pageSize: Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE,
         onChange: (page, newPageSize) => {
           setSearchParams({
             page,

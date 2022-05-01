@@ -151,7 +151,7 @@ const ModifyPreorder = () => {
         productName: preorderProduct.product.name,
         productStatus: null, // TODO: Add the product status here - need to update backend to include the product status in the response
         productPrices,
-        remarks: '',
+        remarks: preorderProduct.remarks || '',
       };
     });
 
@@ -254,7 +254,6 @@ const ModifyPreorder = () => {
                 const supplier = suppliers.find(
                   ({ name }) => name === values.supplierName
                 );
-                console.log('values.preorderProducts', values.preorderProducts);
                 const preorderProductsData = flatten(
                   values.preorderProducts.map((preorderProduct) =>
                     preorderProduct.productPrices

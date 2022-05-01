@@ -14,7 +14,12 @@ import {
 import { Content } from 'components';
 import { Box } from 'components/elements';
 import { formatInPeso } from 'globals/functions';
-import { GENERIC_ERROR_MESSAGE, priceTypes } from 'globals/variables';
+import {
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+  GENERIC_ERROR_MESSAGE,
+  priceTypes,
+} from 'globals/variables';
 import { useCustomParams, useProducts, useUnitTypes } from 'hooks';
 import { flatten } from 'lodash';
 import PropTypes from 'prop-types';
@@ -168,9 +173,9 @@ const Products = () => {
           dataSource={dataSource}
           loading={isProductsFetching || isUnitTypesFetching || isDeleting}
           pagination={{
-            current: searchParams.get('page') || 1,
+            current: Number(searchParams.get('page')) || DEFAULT_PAGE,
             total,
-            pageSize: searchParams.get('pageSize') || 10,
+            pageSize: Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE,
             onChange: (page, newPageSize) => {
               setSearchParams({
                 page,

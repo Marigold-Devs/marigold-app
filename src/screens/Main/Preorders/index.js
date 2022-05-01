@@ -96,9 +96,9 @@ const Preorders = () => {
           dataSource={dataSource}
           loading={isPreordersFetching}
           pagination={{
-            current: searchParams.get('page') || DEFAULT_PAGE,
+            current: Number(searchParams.get('page')) || DEFAULT_PAGE,
             total,
-            pageSize: searchParams.get('pageSize') || DEFAULT_PAGE_SIZE,
+            pageSize: Number(searchParams.get('pageSize')) || DEFAULT_PAGE_SIZE,
             onChange: (page, newPageSize) => {
               setSearchParams({
                 ...Object.fromEntries(searchParams),

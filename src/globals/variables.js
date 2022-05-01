@@ -59,6 +59,7 @@ export const deliveryTypes = {
   PICKUP: 'pickup',
   DELIVERY: 'delivery',
   MARKET: 'market',
+  SPECIAL: 'special',
 };
 
 export const dateRangeTypes = {

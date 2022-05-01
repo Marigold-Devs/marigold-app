@@ -1,13 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import {
   Branches,
   CreateDelivery,
-  ModifyPreorder,
   Dashboard,
   Deliveries,
   Login,
   Main,
+  ModifyPreorder,
   ModifyProduct,
   Notifications,
   Preorders,
@@ -41,6 +41,10 @@ const App = () => (
         <Route element={<Reports />} path="reports" />
 
         <Route element={<Notifications />} path="notifications" />
+
+        <Route element={<Notifications />} path="notifications" />
+
+        <Route element={<Navigate to="/dashboard" replace />} path="/" />
       </Route>
       <Route element={<Login />} path="login" />
     </Routes>

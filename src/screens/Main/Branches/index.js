@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Popconfirm, Row, Space, Table } from 'antd';
+import { Button, Popconfirm, Space, Table } from 'antd';
 import { Content } from 'components';
 import { Box } from 'components/elements';
 import { useBranches } from 'hooks';

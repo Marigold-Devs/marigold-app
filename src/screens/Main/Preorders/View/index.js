@@ -104,6 +104,7 @@ const ViewPreorder = () => {
         const preorderProductData = {
           key,
           name: key,
+          remarks: data[key][0]?.remarks || '',
         };
 
         data[key].forEach((preorderProduct) => {
@@ -162,6 +163,7 @@ const ViewPreorder = () => {
         dataIndex: String(unitType.id),
         align: 'center',
       })),
+      { title: 'Remarks', dataIndex: 'remarks' },
     ];
   }, [unitTypesId, unitTypes]);
 
@@ -171,7 +173,7 @@ const ViewPreorder = () => {
     PreordersService.edit({ id: params.preorderId, body: { status } })
       .then(refetchPreorder)
       .catch((e) => {
-        console.error(e);
+        console.error('Error: ', e);
         message.error(GENERIC_ERROR_MESSAGE);
       })
       .finally(() => {
@@ -339,7 +341,7 @@ const ViewPreorder = () => {
 
           <div className="mb-4 d-flex justify-end">
             <Button size="large" type="primary" ghost>
-              <Link to={`/preorders/${preorder.id}/edit`}>Edit Products</Link>
+              <Link to={`/preorders/${preorder?.id}/edit`}>Edit Products</Link>
             </Button>
           </div>
 

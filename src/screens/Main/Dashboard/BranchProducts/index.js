@@ -120,7 +120,7 @@ const Filter = () => {
       <Col lg={12} span={24}>
         <Typography.Text strong>Status</Typography.Text>
         <Select
-          style={{ width: '100%' }}
+          className="w-100"
           value={searchParams.get('status')}
           allowClear
           onChange={(value) => {

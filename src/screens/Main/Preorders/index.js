@@ -21,7 +21,7 @@ import { usePreorders } from 'hooks';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useDebouncedCallback } from 'use-debounce/lib';
 import './styles.scss';
 
@@ -65,14 +65,8 @@ const Preorders = () => {
       dateFulfilled: formatDateTime(preorder.datetime_fulfilled),
       status: <PreorderStatus status={preorder.status} />,
       actions: (
-        <Button
-          type="primary"
-          ghost
-          onClick={() => {
-            navigate(`/preorders/${preorder.id}`);
-          }}
-        >
-          View
+        <Button type="primary" ghost>
+          <Link to={`/preorders/${preorder.id}`}>View</Link>
         </Button>
       ),
     }));
@@ -144,7 +138,7 @@ const Filter = () => {
       <Col lg={12} span={24}>
         <Typography.Text strong>Status</Typography.Text>
         <Select
-          style={{ width: '100%' }}
+          className="w-100"
           value={searchParams.get('status')}
           allowClear
           onChange={(value) => {

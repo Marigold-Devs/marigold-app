@@ -142,7 +142,7 @@ const Filter = ({ branches }) => {
       <Col lg={12} span={24}>
         <Typography.Text strong>Branch</Typography.Text>
         <Select
-          style={{ width: '100%' }}
+          className="w-100"
           value={Number(searchParams.get('branchId')) || undefined}
           allowClear
           onChange={(value) => {

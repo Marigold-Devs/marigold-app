@@ -74,12 +74,8 @@ const Login = () => {
           }}
         >
           {({ setFieldValue }) => (
-            <Form style={{ width: '100%' }}>
-              <Space
-                direction="vertical"
-                size="large"
-                style={{ width: '100%' }}
-              >
+            <Form className="w-100">
+              <Space className="w-100" direction="vertical" size="large">
                 <div>
                   <Input
                     placeholder="Username"

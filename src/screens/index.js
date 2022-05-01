@@ -7,7 +7,7 @@ export { default as CreateDelivery } from './Main/Deliveries/Create';
 export { default as ViewDelivery } from './Main/Deliveries/View';
 export { default as Notifications } from './Main/Notifications';
 export { default as Preorders } from './Main/Preorders';
-export { default as ModifyPreorder } from './Main/Preorders/Create';
+export { default as ModifyPreorder } from './Main/Preorders/Modify';
 export { default as ViewPreorder } from './Main/Preorders/View';
 export { default as Products } from './Main/Products';
 export { default as ModifyProduct } from './Main/Products/Modify';

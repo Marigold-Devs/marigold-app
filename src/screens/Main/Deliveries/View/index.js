@@ -1,3 +1,4 @@
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -5,6 +6,7 @@ import {
   Divider,
   Input,
   message,
+  Modal,
   Row,
   Select,
   Spin,
@@ -22,14 +24,12 @@ import {
   GENERIC_ERROR_MESSAGE,
   paymentStatuses,
 } from 'globals/variables';
-import { useDelivery, useUnitTypes } from 'hooks';
+import { useDeliveryEdit, useDeliveryRetrieve, useUnitTypes } from 'hooks';
 import { jsPDF } from 'jspdf';
 import { upperFirst } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { DeliveriesService } from 'services';
+import { useNavigate, useParams } from 'react-router';
 import * as Yup from 'yup';
-import '../styles.scss';
 
 const formDetails = {
   defaultValues: {
@@ -50,22 +50,22 @@ const formDetails = {
 
 const ViewDelivery = () => {
   // STATES
-  const [isLoading, setIsLoading] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const [isPrinting, setIsPrinting] = useState(false);
   const [html, setHtml] = useState('');
 
   // CUSTOM HOOKS
   const params = useParams();
-
+  const navigate = useNavigate();
   const { isFetching: isUnitTypesFetching, data: unitTypes } = useUnitTypes();
   const {
     isFetching: isDeliveryFetching,
     data: delivery,
     refetch: refetchDelivery,
-  } = useDelivery({
+  } = useDeliveryRetrieve({
     id: params.deliveryId,
   });
+  const { mutateAsync: editDelivery, isLoading: isEditing } = useDeliveryEdit();
 
   // METHODS
   useEffect(() => {
@@ -148,20 +148,42 @@ const ViewDelivery = () => {
             setHtml('');
           },
         });
-      }, 2000);
+      }, 500);
     } else {
       message.error(GENERIC_ERROR_MESSAGE);
     }
   };
 
+  const showCancelConfirmation = () => {
+    Modal.confirm({
+      icon: <ExclamationCircleOutlined />,
+      autoFocusButton: 'cancel',
+      centered: true,
+      content: 'Are you sure you want to cancel this delivery?',
+      confirmLoading: isEditing,
+      okText: 'Yes',
+      onOk: async () => {
+        await editDelivery({
+          id: params.deliveryId,
+          status: deliveryStatuses.CANCELLED,
+        });
+
+        Modal.destroyAll();
+        message.success('Delivery is cancelled successfully');
+        navigate('/deliveries');
+      },
+    });
+  };
+
   return (
     <Content className="ViewDelivery" title="Delivery">
-      <Spin spinning={isDeliveryFetching || isUnitTypesFetching || isLoading}>
+      <Spin spinning={isDeliveryFetching || isUnitTypesFetching || isEditing}>
         <Box>
           {delivery?.status !== deliveryStatuses.CANCELLED && (
-            <Row className="ViewDelivery_print">
+            <Row className="mb-4">
               <Col sm={12} xs={24}>
                 <Button
+                  className="mb-4"
                   loading={isPrinting}
                   size="large"
                   type="primary"
@@ -196,7 +218,7 @@ const ViewDelivery = () => {
               {formatDateTime(delivery?.datetime_created)}
             </Descriptions.Item>
             <Descriptions.Item label="Schedule of Delivery">
-              {formatDateTime(delivery?.datetime_fulfilled)}
+              {formatDateTime(delivery?.datetime_delivery)}
             </Descriptions.Item>
             <Descriptions.Item label="Status">
               <PreorderStatus status={delivery?.status} />
@@ -212,8 +234,11 @@ const ViewDelivery = () => {
             title="Customer"
             bordered
           >
-            <Descriptions.Item label="Name" span={2}>
+            <Descriptions.Item label="Name">
               {delivery?.customer?.name}
+            </Descriptions.Item>
+            <Descriptions.Item label="Is a Bakery Shop?">
+              {delivery?.customer?.is_bakery ? 'Yes' : 'No'}
             </Descriptions.Item>
             <Descriptions.Item label="Phone">
               {delivery?.customer?.phone || EMPTY_CHARACTER}
@@ -276,27 +301,17 @@ const ViewDelivery = () => {
               initialValues={formDetails.defaultValues}
               validationSchema={formDetails.schema}
               onSubmit={async (values) => {
-                setIsLoading(true);
+                editDelivery({
+                  id: params.deliveryId,
+                  status: deliveryStatuses.DELIVERED,
+                  paymentStatus: values.paymentStatus,
+                  preparedBy: values.preparedBy,
+                  checkedBy: values.checkedBy,
+                  pulledOutBy: values.pulledOutBy,
+                  deliveredBy: values.deliveredBy,
+                });
 
-                try {
-                  await DeliveriesService.edit({
-                    id: params.deliveryId,
-                    body: {
-                      status: deliveryStatuses.DELIVERED,
-                      payment_status: values.paymentStatus,
-                      prepared_by: values.preparedBy,
-                      checked_by: values.checkedBy,
-                      pulled_out_by: values.pulledOutBy,
-                      delivered_by: values.deliveredBy,
-                    },
-                  });
-
-                  refetchDelivery();
-                } catch (e) {
-                  message.error(GENERIC_ERROR_MESSAGE);
-                } finally {
-                  setIsLoading(false);
-                }
+                refetchDelivery();
               }}
             >
               {({ values, setFieldValue }) => (
@@ -349,7 +364,7 @@ const ViewDelivery = () => {
                     <Col sm={12} xs={24}>
                       <Typography.Text strong>Payment Status</Typography.Text>
                       <Select
-                        style={{ width: '100%' }}
+                        className="w-100"
                         value={values.payment_status}
                         allowClear
                         onChange={(value) => {
@@ -367,9 +382,24 @@ const ViewDelivery = () => {
                     </Col>
                   </Row>
 
-                  <Row className="ViewDelivery_setAsDelivered" justify="end">
-                    <Col>
-                      <Button htmlType="submit" size="large" type="primary">
+                  <Row className="mt-6" gutter={[16, 16]}>
+                    <Col sm={12} xs={24}>
+                      <Button
+                        size="large"
+                        block
+                        danger
+                        onClick={showCancelConfirmation}
+                      >
+                        Cancel Delivery
+                      </Button>
+                    </Col>
+                    <Col sm={12} xs={24}>
+                      <Button
+                        htmlType="submit"
+                        size="large"
+                        type="primary"
+                        block
+                      >
                         Set As Delivered
                       </Button>
                     </Col>

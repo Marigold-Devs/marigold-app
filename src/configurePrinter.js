@@ -95,9 +95,15 @@ export const printOrderSlip = (preorder, unitTypes) => {
 };
 
 export const printDeliverySlip = (delivery) => {
-  const maxProductsInPage = 42;
-  const productsInPage = (delivery.delivery_products.length + 1) * 2; // +1 for total row
-  const isDifferentPage = productsInPage > maxProductsInPage;
+  const colors = {
+    BLACK: '#000',
+    BLUE: '#00A2FF',
+    GREEN: '#50C878',
+    PURPLE: '#6A0DAD',
+  };
+  const MAX_PRODUCTS_IN_PAGE = 21;
+  const productsInPage = delivery.delivery_products.length + 1; // +1 for total row
+  const isDifferentPage = productsInPage > MAX_PRODUCTS_IN_PAGE;
 
   let total = 0;
   const productsHtml = [
@@ -126,8 +132,12 @@ export const printDeliverySlip = (delivery) => {
     `,
   ].join('');
 
-  const generateHtml = () => `
-       <div class="header">
+  const generateHtml = ({ color }) => `
+    <div style="min-height: ${
+      isDifferentPage ? '1324px' : 'auto'
+    }; color: ${color} !important; border-color: ${color}; font-size: 11px !important;">
+
+      <div class="header">
         <div class="header-text font-weight-bold">DELIVERY RECEIPT - #${
           delivery.id
         }</div>
@@ -168,7 +178,7 @@ export const printDeliverySlip = (delivery) => {
         </div>
         <div>
           <span class="text-center">
-          ${moment(delivery.datetime_created).format('hh:mm A')}
+            ${moment(delivery.datetime_created).format('hh:mm A')}
           </span>
         </div>
         <div>
@@ -180,7 +190,7 @@ export const printDeliverySlip = (delivery) => {
           </span>
         </div>
       </div>
-  
+
       <div class="products">
         <table>
           <tr>
@@ -192,14 +202,14 @@ export const printDeliverySlip = (delivery) => {
           ${productsHtml}
         </table>
       </div>
-  
+
       <div class="footer">
         <div>
           <div>Receive the above goods in good order and conditions.</div>
           <div class="signature"></div>
           <div class="signature-label">Customer's Complete Name & Signature</div>
         </div>
-  
+
         <div class="users">
           <div>
             <strong>PREPARED BY:</strong>
@@ -226,27 +236,27 @@ export const printDeliverySlip = (delivery) => {
             <span></span>
           </div>
         </div>
-  
+
         <div class="disclaimer">
           NOTE: This order slip at the same time serves as the temporary delivery
           receipt. Our official invoice will be issued upon return of the receipt
           and fully signed by the customer.
         </div>
       </div>
-  
+
       <div class="note">
         <span>BLACK = CUSTOMER'S COPY</span>
-        <span>BLUE = MARIGOLD'S COPY</span>
-      </div>`;
+        <span>${
+          delivery.customer.is_bakery ? 'GREEN' : 'BLUE'
+        } = MARIGOLD'S COPY</span>
+      </div>
+    </div>
+  `;
 
   const data = `
   <html lang="en">
     <head>
       <style>
-        * {
-          font-size: 11px;
-        }
-  
         .header, .products, .footer, .note {
           width: 795px;
         }
@@ -254,7 +264,8 @@ export const printDeliverySlip = (delivery) => {
         .header {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          border: 1px solid black;
+          border-width: 1px;
+          border-style: solid;
         }
   
         .header-text {
@@ -264,7 +275,8 @@ export const printDeliverySlip = (delivery) => {
   
         .header > div {
           padding: 1px;
-          border-top: 1px solid black;
+          border-top-width: 1px;
+          border-top-style: solid;
         }
   
         .products table {
@@ -274,7 +286,8 @@ export const printDeliverySlip = (delivery) => {
   
         .products table th,
         .products table td {
-          border: 1px solid black;
+          border-width: 1px;
+          border-style: solid;
           text-align: center;
         }
   
@@ -285,13 +298,15 @@ export const printDeliverySlip = (delivery) => {
   
         .footer > div {
           padding: 2.5px;
-          border: 1px solid black;
+          border-width: 1px;
+          border-style: solid;
         }
   
         .footer .signature {
           width: 80%;
-          border-bottom: 1px solid black;
           margin: 15px auto 0;
+          border-bottom-width: 1px;
+          border-bottom-style: solid;
         }
   
         .footer .signature-label {
@@ -306,9 +321,10 @@ export const printDeliverySlip = (delivery) => {
         .footer .users span {
           width: 80%;
           height: 100%;
-          border-bottom: 1px solid black;
           margin: auto 0;
           display: block;
+          border-bottom-width: 1px;
+          border-bottom-style: solid;
         }
   
         .footer .disclaimer {
@@ -337,18 +353,32 @@ export const printDeliverySlip = (delivery) => {
     </head>
   
     <body>
-      <div style="height: ${isDifferentPage ? '1300px' : 'auto'};">
-        ${generateHtml()}
-      </div>
+      ${generateHtml({ color: colors.BLACK })}
 
-      </br></br>
+      ${
+        isDifferentPage
+          ? ''
+          : '<hr style="width: 795px; margin: 32px 0; border-style: dotted; border-width: 1px; border-color: #9A9A9A" />'
+      }
 
-      <div style="color: #00A2FF !important;">
-        ${generateHtml()}
-      </div>
+      ${generateHtml({
+        color: delivery.customer.is_bakery ? colors.GREEN : colors.BLUE,
+      })}
+      
+      ${
+        isDifferentPage
+          ? ''
+          : '<hr style="width: 795px; margin: 32px 0; border-style: dotted; border-width: 1px; border-color: #9A9A9A" />'
+      }
+
+      ${generateHtml({ color: colors.PURPLE })}
     </body>
   </html>
   `;
 
   return data;
 };
+
+// #50C878
+
+// '#00A2FF'

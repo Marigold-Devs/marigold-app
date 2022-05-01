@@ -219,6 +219,7 @@ const Filter = ({ onSetPriceType }) => {
       <Col lg={12} span={24}>
         <Typography.Text strong>Price Type</Typography.Text>
         <Radio.Group
+          className="w-100"
           defaultValue={priceTypes.DELIVERY}
           options={[
             { label: 'Delivery', value: priceTypes.DELIVERY },
@@ -227,7 +228,6 @@ const Filter = ({ onSetPriceType }) => {
             { label: 'Special', value: priceTypes.SPECIAL },
           ]}
           optionType="button"
-          style={{ width: '100%' }}
           onChange={(e) => {
             onSetPriceType(e.target.value);
           }}

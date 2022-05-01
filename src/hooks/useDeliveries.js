@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { DeliveriesService } from 'services';
 
 const useDeliveries = ({ params }) =>
@@ -19,6 +19,36 @@ const useDeliveries = ({ params }) =>
         total: query.data.count,
       }),
     }
+  );
+
+export const useDeliveryRetrieve = ({ id }) =>
+  useQuery(['useDeliveryRetrieve', id], () => DeliveriesService.retrieve(id), {
+    select: (query) => query.data,
+    enabled: id !== undefined,
+  });
+
+export const useDeliveryEdit = () =>
+  useMutation(
+    ({
+      checkedBy,
+      deliveredBy,
+      id,
+      paymentStatus,
+      preparedBy,
+      pulledOutBy,
+      status,
+    }) =>
+      DeliveriesService.edit({
+        id,
+        body: {
+          checked_by: checkedBy,
+          delivered_by: deliveredBy,
+          payment_status: paymentStatus,
+          prepared_by: preparedBy,
+          pulled_out_by: pulledOutBy,
+          status,
+        },
+      })
   );
 
 export default useDeliveries;

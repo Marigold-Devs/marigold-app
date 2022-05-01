@@ -150,8 +150,8 @@ const ModifyPreorder = () => {
         productId: preorderProduct.product.id,
         productName: preorderProduct.product.name,
         productStatus: null, // TODO: Add the product status here - need to update backend to include the product status in the response
-        remarks: null,
         productPrices,
+        remarks: '',
       };
     });
 
@@ -212,6 +212,7 @@ const ModifyPreorder = () => {
                   .required()
                   .min(0, 'Must not be negative')
                   .label('Quantity'),
+                remarks: Yup.string().label('Remarks'),
               })
             ),
           })
@@ -253,7 +254,7 @@ const ModifyPreorder = () => {
                 const supplier = suppliers.find(
                   ({ name }) => name === values.supplierName
                 );
-
+                console.log('values.preorderProducts', values.preorderProducts);
                 const preorderProductsData = flatten(
                   values.preorderProducts.map((preorderProduct) =>
                     preorderProduct.productPrices
@@ -261,6 +262,7 @@ const ModifyPreorder = () => {
                       .map((productPrice) => ({
                         branch_product_id: productPrice.branchProductId,
                         quantity: productPrice.quantity,
+                        remarks: preorderProduct.remarks,
                       }))
                   )
                 );
@@ -303,7 +305,7 @@ const ModifyPreorder = () => {
             }
           }}
         >
-          {({ values, errors, setFieldValue }) => (
+          {({ values, setFieldValue }) => (
             <Form className="w-100">
               <Spin spinning={isCreating || isEditing}>
                 <PreorderDetails
@@ -431,7 +433,7 @@ const PreorderDetails = ({
           <Col sm={12} xs={24}>
             <Typography.Text strong>Branch Destination</Typography.Text>
             <Select
-              style={{ width: '100%' }}
+              className="w-100"
               value={values.branchId}
               onChange={(value) => {
                 onSetFieldValue('branchId', value);
@@ -449,7 +451,7 @@ const PreorderDetails = ({
           <Col sm={12} xs={24}>
             <Typography.Text strong>Delivery Type</Typography.Text>
             <Select
-              style={{ width: '100%' }}
+              className="w-100"
               value={values.deliveryType}
               onChange={(value) => {
                 onSetFieldValue('deliveryType', value);
@@ -489,8 +491,8 @@ const PreorderDetails = ({
           <Col md={12} xs={24}>
             <Typography.Text strong>Supplier's Name</Typography.Text>
             <Select
+              className="w-100"
               mode="tags"
-              style={{ width: '100%' }}
               value={values.supplierName !== null ? [values.supplierName] : []}
               onDeselect={() => {
                 onSetFieldValue('supplierName', null);
@@ -714,7 +716,7 @@ const ProductsAll = ({ preorder, values, onSetFieldValue }) => {
         <Col lg={12} span={24}>
           <Typography.Text strong>Status</Typography.Text>
           <Select
-            style={{ width: '100%' }}
+            className="w-100"
             allowClear
             onChange={(value) => {
               setStatus(value);
@@ -781,6 +783,18 @@ const ProductsSelected = ({ values, onSetFieldValue }) => {
               {preorderProduct.productName}
             </Checkbox>
           ),
+          remarks: (
+            <Input
+              className="text-center"
+              value={preorderProduct.remarks || ''}
+              onChange={(e) => {
+                onSetFieldValue(
+                  `preorderProducts.${index}.remarks`,
+                  e.target.value
+                );
+              }}
+            />
+          ),
           status: (
             <BranchProductStatus status={preorderProduct.productStatus} />
           ),
@@ -791,7 +805,7 @@ const ProductsSelected = ({ values, onSetFieldValue }) => {
             data[String(productPrice.unitTypeId)] = (
               <>
                 <Input
-                  style={{ textAlign: 'center' }}
+                  className="text-center"
                   type="number"
                   value={productPrice.quantity || ''}
                   onChange={(e) => {
@@ -833,6 +847,7 @@ const ProductsSelected = ({ values, onSetFieldValue }) => {
         dataIndex: String(unitType.id),
         align: 'center',
       })),
+      { title: 'Remarks', dataIndex: 'remarks' },
       { title: 'Status', dataIndex: 'status' },
     ];
   }, [values, unitTypes]);
@@ -843,6 +858,7 @@ const ProductsSelected = ({ values, onSetFieldValue }) => {
       dataSource={dataSource}
       loading={isUnitTypesFetching}
       pagination={false}
+      scroll={{ x: 800 }}
     />
   );
 };

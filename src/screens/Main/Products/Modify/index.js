@@ -164,7 +164,7 @@ const ModifyProduct = () => {
             }}
           >
             {({ values, setFieldValue }) => (
-              <Form style={{ width: '100%' }}>
+              <Form className="w-100">
                 <ErrorMessage
                   name="response"
                   render={(error) => (
@@ -209,12 +209,12 @@ const ModifyProduct = () => {
                     <Typography.Text strong>VAT</Typography.Text>
                     <Radio.Group
                       buttonStyle="solid"
+                      className="w-100"
                       options={[
                         { label: 'VAT', value: vatTypes.VAT },
                         { label: 'VAT-Exempted', value: vatTypes.VAT_E },
                       ]}
                       optionType="button"
-                      style={{ width: '100%' }}
                       value={values.vatType}
                       onChange={(e) => {
                         setFieldValue('vatType', e.target.value);
@@ -399,11 +399,11 @@ const ProductPrice = ({
     <Col sm={6} xs={12}>
       <Typography.Text strong>Unit Type</Typography.Text>
       <Select
+        className="w-100"
         filterOption={(input, option) =>
           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
         optionFilterProp="children"
-        style={{ width: '100%' }}
         value={values.unitType}
         showSearch
         onChange={(value) => {

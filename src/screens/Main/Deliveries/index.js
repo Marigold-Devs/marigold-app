@@ -8,15 +8,14 @@ import { useCustomParams, useDeliveries } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link, useSearchParams } from 'react-router-dom';
-import './styles.scss';
 
 const columns = [
   { title: 'ID', dataIndex: 'id' },
+  { title: 'Customer', dataIndex: 'customer' },
   { title: 'Date Created', dataIndex: 'date_created' },
   { title: 'Schedule of Delivery', dataIndex: 'schedule_of_delivery' },
   { title: 'Date Completed', dataIndex: 'date_completed' },
   { title: 'Payment', dataIndex: 'payment', align: 'center' },
-  { title: 'Customer', dataIndex: 'customer' },
   { title: 'Status', dataIndex: 'status', align: 'center' },
   { title: 'Actions', dataIndex: 'actions' },
 ];
@@ -53,7 +52,11 @@ const Deliveries = () => {
         payment: <PaymentStatus status={delivery?.payment_status} />,
         customer: delivery?.customer?.name,
         status: <DeliveryStatus status={delivery.status} />,
-        actions: <Link to={`/deliveries/${delivery.id}`}>View</Link>,
+        actions: (
+          <Button type="primary" ghost>
+            <Link to={`/deliveries/${delivery.id}`}>View</Link>
+          </Button>
+        ),
       };
 
       return data;
@@ -65,11 +68,7 @@ const Deliveries = () => {
   return (
     <Content className="Deliveries" title="Deliveries">
       <Box>
-        <Row
-          className="Deliveries_createRow"
-          gutter={[16, 16]}
-          justify="space-between"
-        >
+        <Row className="mb-4" gutter={[16, 16]} justify="space-between">
           <Col md={6} sm={12} span={24}>
             <Filter />
           </Col>
@@ -120,7 +119,7 @@ const Filter = () => {
       <Col span={24}>
         <Typography.Text strong>Payment Status</Typography.Text>
         <Select
-          style={{ width: '100%' }}
+          className="w-100"
           value={searchParams.get('paymentStatus')}
           allowClear
           onChange={(value) => {

@@ -8,6 +8,7 @@ import {
   Input,
   message,
   Modal,
+  Radio,
   Row,
   Select,
   Spin,
@@ -21,6 +22,8 @@ import { Form, Formik } from 'formik';
 import { formatDateTimeForServer, formatInPeso } from 'globals/functions';
 import {
   clientTypes,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
   deliveryTypes,
   GENERIC_ERROR_MESSAGE,
   productStatuses,
@@ -37,6 +40,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { DeliveriesService } from 'services';
+import { useDebouncedCallback } from 'use-debounce/lib';
 import * as Yup from 'yup';
 import '../styles.scss';
 
@@ -47,7 +51,7 @@ const tabs = {
 
 const getPriceByDeliveryType = (deliveryType, prices) => {
   let price = 0;
-  const { priceMarket, priceDelivery, pricePickup } = prices;
+  const { priceMarket, priceDelivery, pricePickup, priceSpecial } = prices;
 
   if (deliveryType === deliveryTypes.PICKUP) {
     price = priceMarket;
@@ -55,6 +59,8 @@ const getPriceByDeliveryType = (deliveryType, prices) => {
     price = priceDelivery;
   } else if (deliveryType === deliveryTypes.MARKET) {
     price = pricePickup;
+  } else if (deliveryType === deliveryTypes.SPECIAL) {
+    price = priceSpecial;
   }
 
   return price;
@@ -90,6 +96,7 @@ const CreateDelivery = () => {
       customerLandline: null,
       customerPhone: null,
       customerDescription: null,
+      customerIsBakery: false,
       deliveryProducts: [],
     },
     schema: Yup.object().shape({
@@ -166,6 +173,7 @@ const CreateDelivery = () => {
                             priceMarket: productPrice.priceMarket,
                             priceDelivery: productPrice.priceDelivery,
                             pricePickup: productPrice.pricePickup,
+                            priceSpecial: productPrice.priceSpecial,
                           }
                         );
 
@@ -199,6 +207,7 @@ const CreateDelivery = () => {
                           values.customerPhone.length > 0
                             ? values.customerPhone
                             : undefined,
+                        is_bakery: values.customerIsBakery,
                       },
                       delivery_products: deliveryProducts,
                     },
@@ -219,8 +228,8 @@ const CreateDelivery = () => {
             setLoading(false);
           }}
         >
-          {({ values, errors, setFieldValue }) => (
-            <Form style={{ width: '100%' }}>
+          {({ values, setFieldValue }) => (
+            <Form className="w-100">
               <Spin spinning={isLoading}>
                 <DeliveryDetails
                   branches={branches}
@@ -278,7 +287,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
         <Col sm={12} xs={24}>
           <Typography.Text strong>Branch Source</Typography.Text>
           <Select
-            style={{ width: '100%' }}
+            className="w-100"
             value={values.branchId}
             onChange={(value) => {
               onSetFieldValue('branchId', value);
@@ -296,7 +305,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
         <Col sm={12} xs={24}>
           <Typography.Text strong>Delivery Type</Typography.Text>
           <Select
-            style={{ width: '100%' }}
+            className="w-100"
             value={values.deliveryType}
             onChange={(value) => {
               onSetFieldValue('deliveryType', value);
@@ -321,6 +330,13 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
             >
               Market
             </Select.Option>
+
+            <Select.Option
+              key={deliveryTypes.SPECIAL}
+              value={deliveryTypes.SPECIAL}
+            >
+              Special
+            </Select.Option>
           </Select>
           <FormError name="deliveryType" />
         </Col>
@@ -329,9 +345,9 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
           <Typography.Text strong>Schedule of Delivery</Typography.Text>
           <DatePicker
             allowClear={false}
+            className="w-100"
             format="MMM DD, YYYY hh:mm A"
             showTime={{ format: 'hh:mm A' }}
-            style={{ width: '100%' }}
             onOk={(value) => {
               onSetFieldValue('datetimeDelivery', value);
             }}
@@ -343,11 +359,11 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
           <Divider>Customer</Divider>
         </Col>
 
-        <Col md={12} xs={24}>
+        <Col md={12} xs={18}>
           <Typography.Text strong>Customer's Name</Typography.Text>
           <Select
+            className="w-100"
             mode="tags"
-            style={{ width: '100%' }}
             value={values.customerName !== null ? [values.customerName] : []}
             onDeselect={() => {
               onSetFieldValue('customerName', null);
@@ -355,6 +371,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
               onSetFieldValue('customerLandline', null);
               onSetFieldValue('customerPhone', null);
               onSetFieldValue('customerDescription', null);
+              onSetFieldValue('customerIsBakery', false);
             }}
             onSelect={(value) => {
               const customerName = value;
@@ -370,6 +387,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
                 'customerDescription',
                 customer?.description || ''
               );
+              onSetFieldValue('customerIsBakery', customer?.is_bakery || false);
             }}
           >
             {customers.map((customer) => (
@@ -381,7 +399,24 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
           <FormError name="customerName" />
         </Col>
 
-        <Col md={6} sm={24}>
+        <Col md={12} xs={6}>
+          <Typography.Text strong>Is Customer a Bakery Shop?</Typography.Text>
+          <Radio.Group
+            className="w-100"
+            options={[
+              { label: 'Yes', value: true },
+              { label: 'No', value: false },
+            ]}
+            optionType="button"
+            value={values.customerIsBakery}
+            onChange={(e) => {
+              onSetFieldValue('customerIsBakery', e.target.value);
+            }}
+          />
+          <FormError name="customerIsBakery" />
+        </Col>
+
+        <Col md={12} xs={24}>
           <Typography.Text strong>Customer's Phone Number</Typography.Text>
           <Input
             value={values.customerPhone}
@@ -392,7 +427,7 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
           <FormError name="customerPhone" />
         </Col>
 
-        <Col md={6} sm={24}>
+        <Col md={12} xs={24}>
           <Typography.Text strong>Customer's Telephone Number</Typography.Text>
           <Input
             value={values.customerLandline}
@@ -463,8 +498,10 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
 
 const ProductsAll = ({ values, onSetFieldValue }) => {
   // STATES
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(DEFAULT_PAGE);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [search, setSearch] = useState('');
+  const [status, setStatus] = useState('');
   const [dataSource, setDataSource] = useState([]);
 
   const columns = [
@@ -478,9 +515,14 @@ const ProductsAll = ({ values, onSetFieldValue }) => {
     data: { total, products },
   } = useBranchProducts({
     params: {
+      branchId: values.branchId,
       page,
       pageSize,
-      branchId: values.branchId,
+      search,
+      status,
+    },
+    options: {
+      enabled: !!values.branchId,
     },
   });
 
@@ -516,6 +558,7 @@ const ProductsAll = ({ values, onSetFieldValue }) => {
                           priceMarket: productPrice.price_market,
                           priceDelivery: productPrice.price_delivery,
                           pricePickup: productPrice.price_pickup,
+                          priceSpecial: productPrice.price_special,
                           balance: productPrice.balance,
                           quantity: 0,
                         })
@@ -546,24 +589,58 @@ const ProductsAll = ({ values, onSetFieldValue }) => {
     onSetFieldValue('deliveryProducts', []);
   }, [values.branchId]);
 
+  const onSearch = useDebouncedCallback((value) => {
+    setSearch(value);
+  }, 500);
+
   return (
-    <Table
-      columns={columns}
-      dataSource={dataSource}
-      loading={isBranchProductsFetching}
-      pagination={{
-        current: page,
-        total,
-        pageSize,
-        onChange: (newPage, newPageSize) => {
-          setPage(newPage);
-          setPageSize(newPageSize);
-        },
-        disabled: isBranchProductsFetching,
-        position: ['bottomCenter'],
-        pageSizeOptions: ['10', '20', '50'],
-      }}
-    />
+    <>
+      <Row className="mb-4" gutter={[16, 16]}>
+        <Col lg={12} span={24}>
+          <Typography.Text strong>Search</Typography.Text>
+          <Input
+            allowClear
+            onChange={(event) => onSearch(event.target.value.trim())}
+          />
+        </Col>
+
+        <Col lg={12} span={24}>
+          <Typography.Text strong>Status</Typography.Text>
+          <Select
+            className="w-100"
+            allowClear
+            onChange={(value) => {
+              setStatus(value);
+            }}
+          >
+            <Select.Option value={productStatuses.AVAILABLE}>
+              Available
+            </Select.Option>
+            <Select.Option value={productStatuses.REORDER}>
+              Reorder
+            </Select.Option>
+          </Select>
+        </Col>
+      </Row>
+
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        loading={isBranchProductsFetching}
+        pagination={{
+          current: page,
+          total,
+          pageSize,
+          onChange: (newPage, newPageSize) => {
+            setPage(newPage);
+            setPageSize(newPageSize);
+          },
+          disabled: isBranchProductsFetching,
+          position: ['bottomCenter'],
+          pageSizeOptions: ['10', '20', '50'],
+        }}
+      />
+    </>
   );
 };
 
@@ -707,6 +784,7 @@ DeliveryDetails.propTypes = {
     customerLandline: PropTypes.string,
     customerPhone: PropTypes.string,
     customerDescription: PropTypes.string,
+    customerIsBakery: PropTypes.bool,
   }),
   onSetFieldValue: PropTypes.func.isRequired,
 };

@@ -50,9 +50,9 @@ const tabs = {
 };
 
 const getPriceByDeliveryType = (deliveryType, prices) => {
-  let price = 0;
   const { priceMarket, priceDelivery, pricePickup, priceSpecial } = prices;
 
+  let price = 0;
   if (deliveryType === deliveryTypes.PICKUP) {
     price = priceMarket;
   } else if (deliveryType === deliveryTypes.DELIVERY) {
@@ -685,6 +685,7 @@ const ProductsSelected = ({ values, onSetFieldValue }) => {
               priceMarket: productPrice.priceMarket,
               priceDelivery: productPrice.priceDelivery,
               pricePickup: productPrice.pricePickup,
+              priceSpecial: productPrice.priceSpecial,
             });
 
             subtotal += price * quantity;

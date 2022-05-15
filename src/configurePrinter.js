@@ -97,10 +97,10 @@ export const printOrderSlip = (preorder, unitTypes) => {
 export const printDeliverySlip = (delivery) => {
   const colors = {
     BLACK: '#000',
-    BLUE: '#00A2FF',
+    BLUE: '#3498DB',
     GREEN: '#50C878',
     PURPLE: '#6A0DAD',
-    RED: '#A93226',
+    RED: '#E74C3C',
   };
   const MAX_PRODUCTS_IN_PAGE = 21;
   const productsInPage = delivery.delivery_products.length + 1; // +1 for total row

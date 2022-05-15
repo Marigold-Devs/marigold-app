@@ -100,6 +100,7 @@ export const printDeliverySlip = (delivery) => {
     BLUE: '#00A2FF',
     GREEN: '#50C878',
     PURPLE: '#6A0DAD',
+    RED: '#A93226',
   };
   const MAX_PRODUCTS_IN_PAGE = 21;
   const productsInPage = delivery.delivery_products.length + 1; // +1 for total row
@@ -362,7 +363,7 @@ export const printDeliverySlip = (delivery) => {
       }
 
       ${generateHtml({
-        color: delivery.customer.is_bakery ? colors.GREEN : colors.BLUE,
+        color: delivery.customer.is_bakery ? colors.BLUE : colors.RED,
       })}
       
       ${

@@ -400,7 +400,9 @@ const DeliveryDetails = ({ branches, customers, values, onSetFieldValue }) => {
         </Col>
 
         <Col md={12} xs={6}>
-          <Typography.Text strong>Is Customer a Bakery Shop?</Typography.Text>
+          <Typography.Text strong>
+            Is Customer a Bakery/Non-market?
+          </Typography.Text>
           <Radio.Group
             className="w-100"
             options={[

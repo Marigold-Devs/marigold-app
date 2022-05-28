@@ -5,7 +5,7 @@ import { Box } from 'components/elements';
 import { useBranches } from 'hooks';
 import React, { useEffect, useState } from 'react';
 import { BranchesService } from 'services';
-import { ModifyBranchModal } from './components/ModifyBranchModal';
+import { ModifyBranchModal } from './ModifyBranchModal';
 
 const columns = [
   { title: 'Name', dataIndex: 'name' },
@@ -24,17 +24,17 @@ const Branches = () => {
   const { isFetching, data: branches, refetch } = useBranches();
 
   // EFFECTS
-  const onCreate = () => {
+  const handleCreate = () => {
     setSelectedBranch(null);
     setModifyBranchModalVisible(true);
   };
 
-  const onEdit = (branch) => {
+  const handleEdit = (branch) => {
     setSelectedBranch(branch);
     setModifyBranchModalVisible(true);
   };
 
-  const onDelete = (id) => {
+  const handleDelete = (id) => {
     setDeleteConfirmLoading(true);
     BranchesService.delete(id)
       .then(() => {
@@ -54,7 +54,7 @@ const Branches = () => {
           <Button
             type="link"
             onClick={() => {
-              onEdit(branch);
+              handleEdit(branch);
             }}
           >
             Edit
@@ -66,7 +66,7 @@ const Branches = () => {
             placement="top"
             title={`Are you sure you want to delete ${branch.name}?`}
             onConfirm={() => {
-              onDelete(branch.id);
+              handleDelete(branch.id);
             }}
           >
             <Button type="link" danger>
@@ -84,7 +84,7 @@ const Branches = () => {
     <Content title="Branches">
       <Box>
         <div className="mb-4 d-flex justify-end">
-          <Button size="large" type="primary" onClick={onCreate}>
+          <Button size="large" type="primary" onClick={handleCreate}>
             <PlusOutlined /> Create Branch
           </Button>
         </div>

@@ -19,6 +19,7 @@ import {
   DEFAULT_PAGE_SIZE,
   GENERIC_ERROR_MESSAGE,
   priceTypes,
+  SEARCH_DEBOUNCE_MS,
 } from 'globals/variables';
 import { useCustomParams, useProducts, useUnitTypes } from 'hooks';
 import { flatten } from 'lodash';
@@ -207,9 +208,9 @@ const Filter = ({ onSetPriceType }) => {
   const [searchParams] = useSearchParams();
   const { setSearchParams } = useCustomParams();
 
-  const onSearch = useDebouncedCallback((value) => {
+  const handleSearch = useDebouncedCallback((value) => {
     setSearchParams({ search: value });
-  }, 500);
+  }, SEARCH_DEBOUNCE_MS);
 
   return (
     <Row className="mb-4" gutter={[16, 16]}>
@@ -218,7 +219,7 @@ const Filter = ({ onSetPriceType }) => {
         <Input
           defaultValue={searchParams.get('search')}
           allowClear
-          onChange={(event) => onSearch(event.target.value.trim())}
+          onChange={(event) => handleSearch(event.target.value.trim())}
         />
       </Col>
       <Col lg={12} span={24}>

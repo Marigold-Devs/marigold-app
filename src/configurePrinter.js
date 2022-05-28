@@ -248,8 +248,9 @@ export const printDeliverySlip = (delivery) => {
       <div class="note">
         <span>BLACK = CUSTOMER'S COPY</span>
         <span>${
-          delivery.customer.is_bakery ? 'GREEN' : 'BLUE'
-        } = MARIGOLD'S COPY</span>
+          delivery.customer.is_bakery ? 'BLUE' : 'RED'
+        } = DELIVERY'S COPY</span>
+        <span>PURPLE = MARIGOLD'S COPY</span>
       </div>
     </div>
   `;

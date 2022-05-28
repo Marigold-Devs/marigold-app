@@ -1,5 +1,5 @@
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from 'globals/variables';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { BranchProductsService } from 'services';
 
 const useBranchProducts = ({ params, options }) =>
@@ -30,6 +30,19 @@ const useBranchProducts = ({ params, options }) =>
       }),
       ...options,
     }
+  );
+
+export const useBranchProductConvert = () =>
+  useMutation(
+    ({ fromBranchProductId, fromQuantity, toBranchProductId, toQuantity }) =>
+      BranchProductsService.convert({
+        body: {
+          from_branch_product_id: fromBranchProductId,
+          from_quantity: fromQuantity,
+          to_branch_product_id: toBranchProductId,
+          to_quantity: toQuantity,
+        },
+      })
   );
 
 export default useBranchProducts;

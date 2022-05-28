@@ -1,3 +1,4 @@
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from 'globals/variables';
 import { useQuery } from 'react-query';
 import { UnitTypesService } from 'services';
 
@@ -7,10 +8,10 @@ const useUnitTypes = () =>
     () =>
       UnitTypesService.list({
         params: {
-          page: 1,
-          page_size: 100,
+          page: DEFAULT_PAGE,
+          page_size: DEFAULT_PAGE_SIZE,
         },
-      }),
+      }).catch((e) => Promise.reject(e.errors)),
     {
       initialData: { data: { results: [] } },
       select: (query) => query?.data?.results,

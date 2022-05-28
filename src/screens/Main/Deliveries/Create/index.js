@@ -27,6 +27,7 @@ import {
   deliveryTypes,
   GENERIC_ERROR_MESSAGE,
   productStatuses,
+  SEARCH_DEBOUNCE_MS,
 } from 'globals/variables';
 import {
   useBranches,
@@ -591,9 +592,9 @@ const ProductsAll = ({ values, onSetFieldValue }) => {
     onSetFieldValue('deliveryProducts', []);
   }, [values.branchId]);
 
-  const onSearch = useDebouncedCallback((value) => {
+  const handleSearch = useDebouncedCallback((value) => {
     setSearch(value);
-  }, 500);
+  }, SEARCH_DEBOUNCE_MS);
 
   return (
     <>
@@ -602,7 +603,7 @@ const ProductsAll = ({ values, onSetFieldValue }) => {
           <Typography.Text strong>Search</Typography.Text>
           <Input
             allowClear
-            onChange={(event) => onSearch(event.target.value.trim())}
+            onChange={(event) => handleSearch(event.target.value.trim())}
           />
         </Col>
 

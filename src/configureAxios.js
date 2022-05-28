@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { actions } from 'ducks/auth';
+import { GENERIC_ERROR_MESSAGE } from 'globals/variables';
+import _ from 'lodash';
 import config from 'services/config';
 
 export const configureAxios = (store) => {
@@ -32,8 +34,10 @@ export const configureAxios = (store) => {
   );
 
   axios.interceptors.response.use(null, (error) => {
-    if (error.config && error.response) {
-      if (error.response.status === 401) {
+    const modifiedError = { ...error };
+
+    if (error.isAxiosError) {
+      if (error?.response?.status === 401) {
         // Get refresh token when 401 response status
         const { refreshToken } = store.getState().AUTH;
 
@@ -88,8 +92,16 @@ export const configureAxios = (store) => {
           })
           .catch(() => Promise.reject(error));
       }
+
+      if (typeof error?.response?.data === 'string') {
+        modifiedError.errors = [error.response.data];
+      } else if (typeof error?.response?.data === 'object') {
+        modifiedError.errors = _.flatten(_.values(error?.response?.data));
+      } else {
+        modifiedError.errors = [GENERIC_ERROR_MESSAGE];
+      }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(modifiedError);
   });
 };

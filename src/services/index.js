@@ -1,6 +1,6 @@
 export { default as AuthService } from './AuthService';
 export { default as BranchesService } from './BranchesService';
-export { default as BranchProductsService } from './BranchProducts';
+export { default as BranchProductsService } from './BranchProductsService';
 export { default as ClientsService } from './ClientsService';
 export { default as DeliveriesService } from './DeliveriesService';
 export { default as NotificationsService } from './NotificationsService';

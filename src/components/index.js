@@ -7,3 +7,4 @@ export { default as Content } from './Partials/Content';
 export { default as PaymentStatus } from './PaymentStatus';
 export { default as PreorderStatus } from './PreorderStatus';
 export { default as RankIcon } from './RankIcon';
+export { default as RequestErrors } from './RequestErrors';

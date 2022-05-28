@@ -11,14 +11,14 @@ const Reports = () => {
   const { setSearchParams } = useCustomParams();
 
   // METHODS
-  const onTabClick = () => {
+  const handleTabClick = () => {
     setSearchParams({}, { shouldResetPage: true });
   };
 
   return (
     <Content title="Reports">
       <Box>
-        <Tabs type="card" destroyInactiveTabPane onTabClick={onTabClick}>
+        <Tabs type="card" destroyInactiveTabPane onTabClick={handleTabClick}>
           <Tabs.TabPane key="customers" tab="Customers">
             <CustomersTab />
           </Tabs.TabPane>

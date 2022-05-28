@@ -19,7 +19,7 @@ const Notifications = () => {
     }
   }, [branches, searchParams]);
 
-  const onTabClick = (branchId) => {
+  const handleTabClick = (branchId) => {
     setSearchParams({ branchId });
   };
 
@@ -30,7 +30,7 @@ const Notifications = () => {
           <Tabs
             activeKey={searchParams.get('branchId')}
             type="card"
-            onTabClick={onTabClick}
+            onTabClick={handleTabClick}
           >
             {branches.map(({ name, id }) => (
               <Tabs.TabPane key={id} tab={name}>

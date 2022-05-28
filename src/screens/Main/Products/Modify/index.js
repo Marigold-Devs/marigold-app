@@ -85,7 +85,7 @@ const ModifyProduct = () => {
     [product]
   );
 
-  const onAddClick = (values) => [
+  const handleAddClick = (values) => [
     ...values.productPrices,
     {
       priceMarket: '',
@@ -97,7 +97,7 @@ const ModifyProduct = () => {
     },
   ];
 
-  const onRemoveClick = (index, values) =>
+  const handleRemoveClick = (index, values) =>
     values.productPrices.filter((_, i) => i !== index);
 
   const handleSuccess = (modifiedProduct) => {
@@ -242,7 +242,7 @@ const ModifyProduct = () => {
                         onRemoveProductPrice={() => {
                           setFieldValue(
                             'productPrices',
-                            onRemoveClick(index, values)
+                            handleRemoveClick(index, values)
                           );
                         }}
                         onSetFieldValue={setFieldValue}
@@ -258,7 +258,7 @@ const ModifyProduct = () => {
                       type="primary"
                       ghost
                       onClick={() => {
-                        setFieldValue('productPrices', onAddClick(values));
+                        setFieldValue('productPrices', handleAddClick(values));
                       }}
                     >
                       <PlusOutlined /> Add Price

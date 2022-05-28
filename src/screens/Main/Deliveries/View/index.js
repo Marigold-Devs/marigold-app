@@ -23,6 +23,7 @@ import {
   EMPTY_CHARACTER,
   GENERIC_ERROR_MESSAGE,
   paymentStatuses,
+  SEARCH_DEBOUNCE_MS,
 } from 'globals/variables';
 import { useDeliveryEdit, useDeliveryRetrieve, useUnitTypes } from 'hooks';
 import { jsPDF } from 'jspdf';
@@ -123,7 +124,7 @@ const ViewDelivery = () => {
     ];
   }, [delivery, unitTypes]);
 
-  const onPrint = () => {
+  const handlePrintClick = () => {
     if (delivery) {
       setIsPrinting(true);
       // eslint-disable-next-line new-cap
@@ -148,7 +149,7 @@ const ViewDelivery = () => {
             setHtml('');
           },
         });
-      }, 500);
+      }, SEARCH_DEBOUNCE_MS);
     } else {
       message.error(GENERIC_ERROR_MESSAGE);
     }
@@ -188,7 +189,7 @@ const ViewDelivery = () => {
                   size="large"
                   type="primary"
                   ghost
-                  onClick={onPrint}
+                  onClick={handlePrintClick}
                 >
                   Print Delivery
                 </Button>

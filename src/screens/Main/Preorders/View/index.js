@@ -167,7 +167,7 @@ const ViewPreorder = () => {
     ];
   }, [unitTypesId, unitTypes]);
 
-  const onUpdateStatus = (status) => {
+  const handleUpdateStatus = (status) => {
     setIsLoading(true);
 
     PreordersService.edit({ id: params.preorderId, body: { status } })
@@ -181,7 +181,7 @@ const ViewPreorder = () => {
       });
   };
 
-  const onPrint = () => {
+  const handlePrintClick = () => {
     if (preorder) {
       setIsPrinting(true);
       // eslint-disable-next-line new-cap
@@ -216,7 +216,7 @@ const ViewPreorder = () => {
                 size="large"
                 type="primary"
                 ghost
-                onClick={onPrint}
+                onClick={handlePrintClick}
               >
                 Print Preorder
               </Button>
@@ -229,7 +229,7 @@ const ViewPreorder = () => {
                     size="large"
                     type="primary"
                     onClick={() => {
-                      onUpdateStatus(preorderStatuses.DELIVERED);
+                      handleUpdateStatus(preorderStatuses.DELIVERED);
                     }}
                   >
                     Set Preorder As Complete
@@ -366,7 +366,7 @@ const ViewPreorder = () => {
                     block
                     danger
                     onClick={() => {
-                      onUpdateStatus(preorderStatuses.CANCELLED);
+                      handleUpdateStatus(preorderStatuses.CANCELLED);
                     }}
                   >
                     Cancel Preorder
@@ -378,7 +378,7 @@ const ViewPreorder = () => {
                     type="primary"
                     block
                     onClick={() => {
-                      onUpdateStatus(preorderStatuses.APPROVED);
+                      handleUpdateStatus(preorderStatuses.APPROVED);
                     }}
                   >
                     Approve Preorder

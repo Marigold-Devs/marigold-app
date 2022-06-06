@@ -21,7 +21,7 @@ export const numberWithCommas = (x) =>
 
 export const formatInPeso = (value, pesoSign = '₱') => {
   const x = Number(value);
-  return _.addisNaN(x)
+  return _.isNaN(x)
     ? ''
     : `${pesoSign}${numberWithCommas(_.round(x, 2).toFixed(2))}`;
 };

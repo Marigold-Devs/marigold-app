@@ -71,7 +71,7 @@ const Dashboard = () => {
                   type="primary"
                   onClick={handleConvertClick}
                 >
-                  <SwapOutlined /> Create Branch
+                  <SwapOutlined /> Convert Stocks
                 </Button>
               ) : null
             }

@@ -134,8 +134,8 @@ export const ConvertProductsModal = ({ branchId, onSuccess, onClose }) => {
           <>
             <Row gutter={[16, 16]}>
               <Col span={24}>
-                <Typography.Text strong>Name</Typography.Text>
-                <Select className="w-100" value={values.branchId}>
+                <Typography.Text strong>Branch</Typography.Text>
+                <Select className="w-100" value={values.branchId} disabled>
                   {branches?.map((branch) => (
                     <Select.Option key={branch.id} value={branch.id}>
                       {branch.name}

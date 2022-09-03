@@ -81,10 +81,10 @@ export const ModifyUnitTypeModal = ({ unitType, onClose }) => {
           console.log('formData', formData);
           if (unitType) {
             await editUnitType(formData);
-            message.success('Discount option was edited successfully');
+            message.success('Unit type was edited successfully');
           } else {
             await createUnitType(formData);
-            message.success('Discount option was created successfully');
+            message.success('Unit type was created successfully');
           }
 
           onClose();

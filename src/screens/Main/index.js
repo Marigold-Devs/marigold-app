@@ -6,6 +6,7 @@ import {
   ShopOutlined,
   ShoppingCartOutlined,
   ShoppingOutlined,
+  TagsOutlined,
 } from '@ant-design/icons';
 import { Container } from 'components';
 import { useAuth } from 'hooks';
@@ -38,6 +39,11 @@ const Main = () => {
         name: 'Products',
         icon: ShoppingOutlined,
         link: '/products',
+      },
+      {
+        name: 'Unit Types',
+        icon: TagsOutlined,
+        link: '/unit-types',
       },
       {
         name: 'Branches',

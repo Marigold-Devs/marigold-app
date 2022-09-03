@@ -13,6 +13,7 @@ import {
   Preorders,
   Products,
   Reports,
+  UnitTypes,
   ViewDelivery,
   ViewPreorder,
 } from 'screens';
@@ -42,7 +43,7 @@ const App = () => (
 
         <Route element={<Notifications />} path="notifications" />
 
-        <Route element={<Notifications />} path="notifications" />
+        <Route element={<UnitTypes />} path="unit-types" />
 
         <Route element={<Navigate to="/dashboard" replace />} path="/" />
       </Route>

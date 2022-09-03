@@ -20,7 +20,7 @@
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "antd": "^n4.16.13",
+    "antd": "^4.16.13",
     "antd-css-utilities": "^1.0.3",
     "axios": "^0.24.0",
     "classnames": "^2.3.1",

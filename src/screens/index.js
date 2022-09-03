@@ -12,3 +12,4 @@ export { default as ViewPreorder } from './Main/Preorders/View';
 export { default as Products } from './Main/Products';
 export { default as ModifyProduct } from './Main/Products/Modify';
 export { default as Reports } from './Main/Reports';
+export { default as UnitTypes } from './Main/UnitTypes';
